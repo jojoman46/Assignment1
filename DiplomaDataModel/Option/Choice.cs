@@ -12,8 +12,12 @@ namespace DiplomaDataModel.Option
     {
         [Key]
         public int ChoiceId { get; set; }
+
         [ForeignKey("YearTerm")]
-        public int YearTermId { get; set; }
+        public int? YearTermId { get; set; }
+        [ForeignKey("YearTermId")]
+        public virtual YearTerm YearTerm { get; set; }
+
         [MaxLength(9), RegularExpression(@"(A000)", ErrorMessage = "Invalid Student ID")]
         public string StudentId { get; set; }
         [MaxLength(40)]

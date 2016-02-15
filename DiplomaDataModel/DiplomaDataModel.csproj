@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Option\Choice.cs" />
+    <Compile Include="Option\DummyData.cs" />
     <Compile Include="Option\Option.cs" />
     <Compile Include="Option\OptionContext.cs" />
     <Compile Include="Option\YearTerm.cs" />
