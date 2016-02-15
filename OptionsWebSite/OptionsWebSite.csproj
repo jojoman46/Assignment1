@@ -201,6 +201,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\OptionContext\201602152258385_InitialCreate.cs" />
+    <Compile Include="Migrations\OptionContext\201602152258385_InitialCreate.Designer.cs">
+      <DependentUpon>201602152258385_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\OptionContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -279,6 +283,17 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DiplomaDataModel\DiplomaDataModel.csproj">
+      <Project>{4713aa04-0f43-409b-8f03-ab9b3e9e8aa2}</Project>
+      <Name>DiplomaDataModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\OptionContext\201602152258385_InitialCreate.resx">
+      <DependentUpon>201602152258385_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
