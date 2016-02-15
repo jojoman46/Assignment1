@@ -1,35 +1,15 @@
-namespace OptionsWebSite.Migrations.OptionContext
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DiplomaDataModel.Option
 {
-    using DiplomaDataModel.Option;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<DiplomaDataModel.Option.OptionContext>
+    public class DummyData
     {
-        public Configuration()
+        public static List<YearTerm> getYearTerm()
         {
-            AutomaticMigrationsEnabled = false;
-            MigrationsDirectory = @"Migrations\OptionContext";
-        }
-
-        protected override void Seed(DiplomaDataModel.Option.OptionContext context)
-        {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
-
             List<YearTerm> yearterms = new List<YearTerm>() {
               new YearTerm {
                   Year = 2015,
@@ -52,7 +32,11 @@ namespace OptionsWebSite.Migrations.OptionContext
                   IsDefault = true
               }
             };
+            return yearterms;
+        }
 
+        public static List<Option> getOption()
+        {
             List<Option> options = new List<Option>() {
               new Option {
                 Title = "Data Communications",
@@ -83,21 +67,7 @@ namespace OptionsWebSite.Migrations.OptionContext
                 IsActive = false
               }
             };
-
-
-
-            context.Options.AddOrUpdate(
-                o => o.OptionId,options.ToArray()
-            );
-
-            context.SaveChanges();
-
-            context.YearTerms.AddOrUpdate(
-                y => new { y.Term, y.Year },
-                yearterms.ToArray()
-            );
-
-            context.SaveChanges();
+            return options;
         }
     }
 }
