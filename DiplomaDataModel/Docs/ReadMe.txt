@@ -1,5 +1,5 @@
-﻿enable-migrations -ContextTypeName OptionContext -MigrationsDirectory Migrations\OptionContext
+﻿enable-migrations -ContextTypeName ApplicationDbContext -MigrationsDirectory Migrations\ApplicationDbContext
 
-add-migration -ConfigurationTypeName OptionsWebSite.Migrations.OptionContext.Configuration "InitialCreate"
+add-migration -ConfigurationTypeName OptionsWebSite.Migrations.IdentityMigrations.Configuration "Users Create"
 
-update-database -ConfigurationTypeName OptionsWebSite.Migrations.OptionContext.Configuration
+update-database -ConfigurationTypeName OptionsWebSite.Migrations.IdentityMigrations.Configuration
