@@ -41,6 +41,16 @@ namespace OptionsWebSite.Controllers
             return vend.Year + " " + result;
         }
 
+        public IEnumerable<Option> getCurrentCourses()
+        {
+            List<Option> list = null;
+            var vend = (from vnd in db.Options
+                        where vnd.IsActive == true
+                        select vnd);
+            list = vend.ToList();
+            return list;
+        }
+
         // GET: Choices/Details/5
         public ActionResult Details(int? id)
         {
@@ -61,10 +71,10 @@ namespace OptionsWebSite.Controllers
         {
             ViewBag.CurrentTerm = getCurrentTerm();
             ViewBag.StudentId = User.Identity.Name;
-            ViewBag.FirstChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
-            ViewBag.FourthChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
-            ViewBag.SecondChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
-            ViewBag.ThirdChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
+            ViewBag.FirstChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.FourthChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.SecondChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.ThirdChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
             ViewBag.YearTermId = new SelectList(db.YearTerms, "YearTermId", "YearTermId");
             return View();
         }
