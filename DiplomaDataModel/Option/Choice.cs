@@ -19,7 +19,7 @@ namespace DiplomaDataModel.Option
         public virtual YearTerm YearTerm { get; set; }
 
         [MaxLength(9), RegularExpression(@"A00[0-9]{6}", ErrorMessage = "Invalid Students ID")]
-        public string StudentId { get; set; }
+        public string StudentId { get; set; } 
         [MaxLength(40)]
         public string StudentFirstName { get; set; }
         [MaxLength(40)]
