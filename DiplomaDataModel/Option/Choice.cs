@@ -50,6 +50,14 @@ namespace DiplomaDataModel.Option
         [ForeignKey("FourthChoiceOptionId")]
         public Option FourthOption { get; set; }
 
-        public DateTime SelectionDate { get; set; }
+        [ScaffoldColumn(false)]
+        public DateTime SelectionDate {
+            get {
+                return DateTime.Now;
+            } set {
+                value = DateTime.Now;
+            }
+        }
+
     }
 }
