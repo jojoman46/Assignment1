@@ -39,13 +39,13 @@ namespace OptionsWebSite.Controllers
         // GET: Choices/Create
         public ActionResult Create()
         {
+
             ViewBag.StudentId = User.Identity.Name;
             ViewBag.FirstChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
             ViewBag.FourthChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
             ViewBag.SecondChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
             ViewBag.ThirdChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
             ViewBag.YearTermId = new SelectList(db.YearTerms, "YearTermId", "YearTermId");
-            
             return View();
         }
 
@@ -54,7 +54,7 @@ namespace OptionsWebSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ChoiceId,YearTermId,StudentId,StudentFirstName,StudentLastName,FirstChoiceOptionId,SecondChoiceOptionId,ThirdChoiceOptionId,FourthChoiceOptionId,SelectionDate")] Choice choice)
+        public ActionResult Create([Bind(Include = "ChoiceId,YearTermId,StudentId,StudentFirstName,StudentLastName,FirstChoiceOptionId,SecondChoiceOptionId,ThirdChoiceOptionId,FourthChoiceOptionId")] Choice choice)
         {
             if (ModelState.IsValid)
             {

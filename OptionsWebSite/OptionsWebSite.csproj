@@ -297,16 +297,16 @@
     <Content Include="Views\Options\Details.cshtml" />
     <Content Include="Views\Options\Edit.cshtml" />
     <Content Include="Views\Options\Index.cshtml" />
-    <Content Include="Views\Choices\Create.cshtml" />
-    <Content Include="Views\Choices\Delete.cshtml" />
-    <Content Include="Views\Choices\Details.cshtml" />
-    <Content Include="Views\Choices\Edit.cshtml" />
-    <Content Include="Views\Choices\Index.cshtml" />
     <Content Include="Views\YearTerms\Create.cshtml" />
     <Content Include="Views\YearTerms\Delete.cshtml" />
     <Content Include="Views\YearTerms\Details.cshtml" />
     <Content Include="Views\YearTerms\Edit.cshtml" />
     <Content Include="Views\YearTerms\Index.cshtml" />
+    <Content Include="Views\Choices\Create.cshtml" />
+    <Content Include="Views\Choices\Delete.cshtml" />
+    <Content Include="Views\Choices\Details.cshtml" />
+    <Content Include="Views\Choices\Edit.cshtml" />
+    <Content Include="Views\Choices\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
