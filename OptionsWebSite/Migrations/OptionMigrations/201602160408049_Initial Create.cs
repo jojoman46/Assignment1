@@ -1,4 +1,4 @@
-namespace OptionsWebSite.Migrations.OptionContext
+namespace OptionsWebSite.Migrations.OptionMigrations
 {
     using System;
     using System.Data.Entity.Migrations;

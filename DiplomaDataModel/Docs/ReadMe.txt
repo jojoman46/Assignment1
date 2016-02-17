@@ -1,5 +1,5 @@
-﻿enable-migrations -ContextTypeName OptionContext -MigrationsDirectory Migrations\OptionContext
+﻿enable-migrations -ContextProjectName DiplomaDataModel -ContextTypeName ApplicationDbContext -MigrationsDirectory Migrations\IdentityMigrations
 
-add-migration -ConfigurationTypeName OptionsWebSite.Migrations.OptionContext.Configuration "InitialCreate"
+add-migration -ConfigurationTypeName OptionsWebSite.Migrations.IdentityMigrations.Configuration "Initial Create"
 
-update-database -ConfigurationTypeName OptionsWebSite.Migrations.OptionContext.Configuration
+update-database -ConfigurationTypeName OptionsWebSite.Migrations.IdentityMigrations.Configuration

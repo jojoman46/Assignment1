@@ -18,8 +18,8 @@ namespace DiplomaDataModel.Option
         [ForeignKey("YearTermId")]
         public virtual YearTerm YearTerm { get; set; }
 
-        [MaxLength(9), RegularExpression(@"(A000)", ErrorMessage = "Invalid Student ID")]
-        public string StudentId { get; set; }
+        [MaxLength(9), RegularExpression(@"A00[0-9]{6}", ErrorMessage = "Invalid Students ID")]
+        public string StudentId { get; set; } 
         [MaxLength(40)]
         public string StudentFirstName { get; set; }
         [MaxLength(40)]
@@ -50,6 +50,14 @@ namespace DiplomaDataModel.Option
         [ForeignKey("FourthChoiceOptionId")]
         public Option FourthOption { get; set; }
 
-        public DateTime SelectionDate { get; set; }
+        [ScaffoldColumn(false)]
+        public DateTime SelectionDate {
+            get {
+                return DateTime.Now;
+            } set {
+                value = DateTime.Now;
+            }
+        }
+
     }
 }
