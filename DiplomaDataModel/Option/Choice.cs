@@ -18,7 +18,7 @@ namespace DiplomaDataModel.Option
         [ForeignKey("YearTermId")]
         public virtual YearTerm YearTerm { get; set; }
 
-        [MaxLength(9), RegularExpression(@"(A000)", ErrorMessage = "Invalid Student ID")]
+        [MaxLength(9), RegularExpression(@"A00[0-9]{6}", ErrorMessage = "Invalid Students ID")]
         public string StudentId { get; set; }
         [MaxLength(40)]
         public string StudentFirstName { get; set; }

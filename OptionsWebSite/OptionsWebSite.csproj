@@ -217,16 +217,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\ApplicationDbContext\Configuration.cs" />
-    <Compile Include="Migrations\IdentityMigrations\201602152323336_Users Create.cs" />
-    <Compile Include="Migrations\IdentityMigrations\201602152323336_Users Create.Designer.cs">
-      <DependentUpon>201602152323336_Users Create.cs</DependentUpon>
+    <Compile Include="Migrations\IdentityMigrations\201602160413333_Initial Create.cs" />
+    <Compile Include="Migrations\IdentityMigrations\201602160413333_Initial Create.Designer.cs">
+      <DependentUpon>201602160413333_Initial Create.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\OptionContext\201602152258385_InitialCreate.cs" />
-    <Compile Include="Migrations\OptionContext\201602152258385_InitialCreate.Designer.cs">
-      <DependentUpon>201602152258385_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\IdentityMigrations\Configuration.cs" />
+    <Compile Include="Migrations\OptionMigrations\201602160408049_Initial Create.cs" />
+    <Compile Include="Migrations\OptionMigrations\201602160408049_Initial Create.Designer.cs">
+      <DependentUpon>201602160408049_Initial Create.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\OptionContext\Configuration.cs" />
+    <Compile Include="Migrations\OptionMigrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -326,11 +326,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\IdentityMigrations\201602152323336_Users Create.resx">
-      <DependentUpon>201602152323336_Users Create.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\IdentityMigrations\201602160413333_Initial Create.resx">
+      <DependentUpon>201602160413333_Initial Create.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\OptionContext\201602152258385_InitialCreate.resx">
-      <DependentUpon>201602152258385_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\OptionMigrations\201602160408049_Initial Create.resx">
+      <DependentUpon>201602160408049_Initial Create.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

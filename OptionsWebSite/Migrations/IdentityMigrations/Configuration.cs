@@ -18,7 +18,6 @@ namespace OptionsWebSite.Migrations.IdentityMigrations
 
         protected override void Seed(OptionsWebSite.Models.ApplicationDbContext context)
         {
-
             var userStore = new UserStore<ApplicationUser>(context);
             var userManger = new UserManager<ApplicationUser>(userStore);
 
