@@ -59,8 +59,8 @@ namespace OptionsWebSite.Controllers
         // GET: Choices/Create
         public ActionResult Create()
         {
-            ViewBag.FUCKED = getCurrentTerm();
-             
+            ViewBag.CurrentTerm = getCurrentTerm();
+            ViewBag.StudentId = User.Identity.Name;
             ViewBag.FirstChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
             ViewBag.FourthChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
             ViewBag.SecondChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
