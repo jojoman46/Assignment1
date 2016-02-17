@@ -21,6 +21,36 @@ namespace OptionsWebSite.Controllers
             return View(choices.ToList());
         }
 
+        public string getCurrentTerm()
+        {
+            var vend = (from vnd in db.YearTerms
+                        where vnd.IsDefault == true
+                        select vnd).First(); 
+            string result = "";
+            if (vend.Term == 10)
+            {
+                result = "Winter";
+            } else if (vend.Term == 20)
+            {
+                result = "Spring/Summer";
+            }
+            else
+            {
+                result = "Fall";
+            }
+            return vend.Year + " " + result;
+        }
+
+        public IEnumerable<Option> getCurrentCourses()
+        {
+            List<Option> list = null;
+            var vend = (from vnd in db.Options
+                        where vnd.IsActive == true
+                        select vnd);
+            list = vend.ToList();
+            return list;
+        }
+
         // GET: Choices/Details/5
         public ActionResult Details(int? id)
         {
@@ -39,12 +69,12 @@ namespace OptionsWebSite.Controllers
         // GET: Choices/Create
         public ActionResult Create()
         {
-
+            ViewBag.CurrentTerm = getCurrentTerm();
             ViewBag.StudentId = User.Identity.Name;
-            ViewBag.FirstChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
-            ViewBag.FourthChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
-            ViewBag.SecondChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
-            ViewBag.ThirdChoiceOptionId = new SelectList(db.Options, "OptionId", "Title");
+            ViewBag.FirstChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.FourthChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.SecondChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.ThirdChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
             ViewBag.YearTermId = new SelectList(db.YearTerms, "YearTermId", "YearTermId");
             return View();
         }
@@ -54,7 +84,7 @@ namespace OptionsWebSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ChoiceId,YearTermId,StudentId,StudentFirstName,StudentLastName,FirstChoiceOptionId,SecondChoiceOptionId,ThirdChoiceOptionId,FourthChoiceOptionId")] Choice choice)
+        public ActionResult Create([Bind(Include = "ChoiceId,YearTermId,StudentId,StudentFirstName,StudentLastName,FirstChoiceOptionId,SecondChoiceOptionId,ThirdChoiceOptionId,FourthChoiceOptionId,SelectionDate")] Choice choice)
         {
             if (ModelState.IsValid)
             {
