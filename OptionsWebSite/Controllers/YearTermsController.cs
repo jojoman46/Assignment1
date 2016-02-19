@@ -82,17 +82,20 @@ namespace OptionsWebSite.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
+                
                 if (yearTerm.IsDefault)
                 {
                     var c = (from x in db.YearTerms
-                            where x.IsDefault == true
-                            select x).First();
+                             where x.IsDefault == true
+                             select x).First();
 
                     // do your stuff  
                     c.IsDefault = false;
-                }      
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }     
 
 
                 db.Entry(yearTerm).State = EntityState.Modified;
