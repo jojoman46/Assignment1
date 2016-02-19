@@ -1,4 +1,4 @@
-namespace OptionsWebSite.Migrations.OptionMigrations
+namespace OptionsWebSite.Migrations.OptionsMigrations
 {
     using DiplomaDataModel.Option;
     using System;
@@ -12,7 +12,7 @@ namespace OptionsWebSite.Migrations.OptionMigrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            MigrationsDirectory = @"Migrations\OptionMigrations";
+            MigrationsDirectory = @"Migrations\OptionsMigrations";
         }
 
         protected override void Seed(DiplomaDataModel.Option.OptionContext context)
@@ -37,6 +37,7 @@ namespace OptionsWebSite.Migrations.OptionMigrations
                 new Option {Title="Tech Pro",IsActive=false },
             };
             context.Options.AddOrUpdate(o => o.OptionId, options.ToArray());
+
         }
     }
 }
