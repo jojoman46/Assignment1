@@ -5,24 +5,29 @@
 }
 
 <h2>Create</h2>
+<<<<<<< HEAD
 @using (Html.BeginForm()) 
+=======
+
+@using (Html.BeginForm())
+>>>>>>> f65c376a57fb21e908042afa1f81f400fc7ee7d2
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Choice</h4>
         <hr />
         <div class="form-group">
             @Html.LabelFor(model => model.YearTermId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.YearTerm, htmlAttributes: new { @class = "form-control", @Value=ViewBag.CurrentTerm, @readonly="true" })
+                @Html.TextBoxFor(model => model.YearTerm, htmlAttributes: new { @class = "form-control", @Value = ViewBag.CurrentTerm, @readonly = "true" })
             </div>
         </div>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.StudentId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor( model => model.StudentId, new { htmlAttributes = new { @class = "form-control", @readonly="readonly", @Value = ViewBag.StudentId} })
+                @Html.EditorFor(model => model.StudentId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @Value = ViewBag.StudentId } })
                 @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
             </div>
         </div>

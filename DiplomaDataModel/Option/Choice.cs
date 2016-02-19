@@ -16,41 +16,43 @@ namespace DiplomaDataModel.Option
 
         [ForeignKey("YearTerm")]
         public int? YearTermId { get; set; }
-        [ForeignKey("YearTermId")]
+        [ForeignKey("YearTermId"), Display(Name = "Year / Semester")]
         public virtual YearTerm YearTerm { get; set; }
 
-        [MaxLength(9), RegularExpression(@"A00[0-9]{6}", ErrorMessage = "Invalid Students ID")]
+        [MaxLength(9), RegularExpression(@"A00[0-9]{6}", ErrorMessage = "Invalid Students ID"), Display(Name = "Student ID")]
         public string StudentId { get; set; } 
+<<<<<<< HEAD
         [MaxLength(40)]
         [Required]
         public string StudentFirstName { get; set; }
         [MaxLength(40)]
         [Required]
+=======
+        [MaxLength(40), Display(Name = "Student First Name")]
+        public string StudentFirstName { get; set; }
+        [MaxLength(40), Display(Name = "Student Last Name")]
+>>>>>>> f65c376a57fb21e908042afa1f81f400fc7ee7d2
         public string StudentLastName { get; set; }
 
         [Display(Name = "First Choice: ")]
         [ForeignKey("FirstOption")]
         public int? FirstChoiceOptionId { get; set; }
-        [ForeignKey("FirstChoiceOptionId")]
+        [ForeignKey("FirstChoiceOptionId"), Display(Name = "First Choice: ")]
         public Option FirstOption { get; set; }
 
-
-        [Display(Name = "Second Choice: ")]
         [ForeignKey("SecondOption")]
         public int? SecondChoiceOptionId { get; set; }
-        [ForeignKey("SecondChoiceOptionId")]
+        [ForeignKey("SecondChoiceOptionId"), Display(Name = "Second Choice: ")]
         public Option SecondOption { get; set; }
 
-        [Display(Name = "Third Choice: ")]
         [ForeignKey("ThirdOption")]
         public int? ThirdChoiceOptionId { get; set; }
-        [ForeignKey("ThirdChoiceOptionId")]
+        [ForeignKey("ThirdChoiceOptionId"), Display(Name = "Third Choice: ")]
         public Option ThirdOption { get; set; }
 
-        [Display(Name = "Fourth Choice: ")]
         [ForeignKey("FourthOption")]
         public int? FourthChoiceOptionId { get; set; }
-        [ForeignKey("FourthChoiceOptionId")]
+        [ForeignKey("FourthChoiceOptionId"), Display(Name = "Fourth Choice: ")]
         public Option FourthOption { get; set; }
 
         [ScaffoldColumn(false)]
