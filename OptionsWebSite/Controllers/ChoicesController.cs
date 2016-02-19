@@ -19,7 +19,6 @@ namespace OptionsWebSite.Controllers
         public ActionResult Index()
         {
             var choices = db.Choices.Include(c => c.FirstOption).Include(c => c.FourthOption).Include(c => c.SecondOption).Include(c => c.ThirdOption).Include(c => c.YearTerm);
-            //var choices = db.Choices.Include(c => c.FirstOption).Include(c => c.FourthOption).Include(c => c.SecondOption).Include(c => c.ThirdOption);
             return View(choices.ToList());
         }
 
@@ -43,6 +42,51 @@ namespace OptionsWebSite.Controllers
             return vend.Year + " " + result;
         }
 
+        private bool validChoice(Choice choice)
+        {
+            // Check for non-duplicate options
+            List<int> ChoiceList = new List<int>();
+            ChoiceList.Add((int)choice.FirstChoiceOptionId);
+            ChoiceList.Add((int)choice.SecondChoiceOptionId);
+            ChoiceList.Add((int)choice.ThirdChoiceOptionId);
+            ChoiceList.Add((int)choice.FourthChoiceOptionId);
+
+            if (ChoiceList.Count != ChoiceList.Distinct().Count())
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool checkChoices(Choice choice)
+        {
+            /*
+            int result = db.Choices.Where(c => c.StudentId == choice.StudentId
+            && c.YearTermId == choice.YearTermId).Count();
+
+            if (result == 0)
+            {
+                return true;
+            }
+            return false;
+            */
+            int termId = getActive();
+            int vend = (from vnd in db.Choices
+                        where vnd.YearTermId == termId && vnd.StudentId == choice.StudentId
+                        select vnd).Count();
+            if (vend == 0)
+                return true;
+            return false;
+        }
+
+        public int getActive()
+        {
+            var vend = (from vnd in db.YearTerms
+                        where vnd.IsDefault == true
+                        select vnd).First();
+            return vend.YearTermId;
+        }
+
         public IEnumerable<Option> getCurrentCourses()
         {
             List<Option> list = null;
@@ -61,12 +105,13 @@ namespace OptionsWebSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Choice choice = db.Choices.Find(id);
-            if (choice == null)
+            var choice = db.Choices.Include(c => c.FirstOption).Include(c => c.FourthOption).Include(c => c.SecondOption).Include(c => c.ThirdOption).Include(c => c.YearTerm);
+            Choice finalChoice = choice.Where(c => c.ChoiceId == id).First();
+            if (finalChoice == null)
             {
                 return HttpNotFound();
             }
-            return View(choice);
+            return View(finalChoice);
         }
 
         // GET: Choices/Create
@@ -90,18 +135,35 @@ namespace OptionsWebSite.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ChoiceId,YearTermId,StudentId,StudentFirstName,StudentLastName,FirstChoiceOptionId,SecondChoiceOptionId,ThirdChoiceOptionId,FourthChoiceOptionId,SelectionDate")] Choice choice)
         {
-            if (ModelState.IsValid)
+            bool validInput = true;
+            if (!validChoice(choice))
             {
-                db.Choices.Add(choice);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ModelState.AddModelError("", "No Duplication Options");
+                validInput = false;
             }
 
-            ViewBag.FirstChoiceOptionId = new SelectList(db.Options, "OptionId", "Title", choice.FirstChoiceOptionId);
-            ViewBag.FourthChoiceOptionId = new SelectList(db.Options, "OptionId", "Title", choice.FourthChoiceOptionId);
-            ViewBag.SecondChoiceOptionId = new SelectList(db.Options, "OptionId", "Title", choice.SecondChoiceOptionId);
-            ViewBag.ThirdChoiceOptionId = new SelectList(db.Options, "OptionId", "Title", choice.ThirdChoiceOptionId);
-            ViewBag.YearTermId = new SelectList(db.YearTerms, "YearTermId", "YearTermId", choice.YearTermId);
+            if (validInput && checkChoices(choice) == false)
+            {
+                ModelState.AddModelError("", "Can only pick options once");
+                validInput = false;
+            }
+
+
+            if (ModelState.IsValid && validInput)
+            {
+                choice.YearTermId = getActive();
+                db.Choices.Add(choice);
+                db.SaveChanges();
+                return Redirect("/Home/Index");
+            }
+
+            ViewBag.FirstChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.FourthChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.SecondChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.ThirdChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
+            ViewBag.YearTermId = new SelectList(db.YearTerms, "YearTermId", "YearTermId");
+            ViewBag.CurrentTerm = getCurrentTerm();
+            ViewBag.StudentId = User.Identity.Name;
             return View(choice);
         }
 
@@ -156,12 +218,13 @@ namespace OptionsWebSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Choice choice = db.Choices.Find(id);
-            if (choice == null)
+            var choice = db.Choices.Include(c => c.FirstOption).Include(c => c.FourthOption).Include(c => c.SecondOption).Include(c => c.ThirdOption).Include(c => c.YearTerm);
+            Choice finalChoice = choice.Where(c => c.ChoiceId == id).First();
+            if (finalChoice == null)
             {
                 return HttpNotFound();
             }
-            return View(choice);
+            return View(finalChoice);
         }
 
         // POST: Choices/Delete/5

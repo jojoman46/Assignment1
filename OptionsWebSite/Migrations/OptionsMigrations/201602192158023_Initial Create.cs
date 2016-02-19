@@ -1,4 +1,4 @@
-namespace OptionsWebSite.Migrations.OptionMigrations
+namespace OptionsWebSite.Migrations.OptionsMigrations
 {
     using System;
     using System.Data.Entity.Migrations;
@@ -14,8 +14,8 @@ namespace OptionsWebSite.Migrations.OptionMigrations
                         ChoiceId = c.Int(nullable: false, identity: true),
                         YearTermId = c.Int(),
                         StudentId = c.String(maxLength: 9),
-                        StudentFirstName = c.String(maxLength: 40),
-                        StudentLastName = c.String(maxLength: 40),
+                        StudentFirstName = c.String(nullable: false, maxLength: 40),
+                        StudentLastName = c.String(nullable: false, maxLength: 40),
                         FirstChoiceOptionId = c.Int(),
                         SecondChoiceOptionId = c.Int(),
                         ThirdChoiceOptionId = c.Int(),
