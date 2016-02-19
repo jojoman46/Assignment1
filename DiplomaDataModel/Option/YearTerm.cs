@@ -9,7 +9,7 @@ namespace DiplomaDataModel.Option
 {
     public class YearTerm
     {
-        [Key]
+        [Key, Display(Name = "Year / Semester")]
         public int YearTermId { get; set; }
         public int Year { get; set; }
         public int Term { get; set; }
