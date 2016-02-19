@@ -22,8 +22,10 @@ namespace DiplomaDataModel.Option
         [MaxLength(9), RegularExpression(@"A00[0-9]{6}", ErrorMessage = "Invalid Students ID")]
         public string StudentId { get; set; } 
         [MaxLength(40)]
+        [Required]
         public string StudentFirstName { get; set; }
         [MaxLength(40)]
+        [Required]
         public string StudentLastName { get; set; }
 
         [Display(Name = "First Choice: ")]
