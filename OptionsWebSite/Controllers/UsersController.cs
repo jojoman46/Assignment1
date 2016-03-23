@@ -25,34 +25,23 @@ namespace OptionsWebSite.Controllers
                 ViewBag.ResultMessage = "Cannot modify A00111111";
                 return View("Index",db.Users.ToList());
             }
-            var listRoles = db.Roles.ToList();
-            ViewBag.listRoles = listRoles;
+            var user = db.Users.Where(r => r.UserName.Equals(id, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var listOfCurrentRoles = new List<string>();
 
-            var role = db.Users.Where(r => r.UserName.Equals(id, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-            /*
-            var curRole = role.Roles;
-            foreach(IdentityUserRole r in curRole)
+            foreach(IdentityUserRole tempUserRole in user.Roles)
             {
-                foreach(IdentityRole idR in listRoles)
+                var roleId = tempUserRole.RoleId;
+                foreach(IdentityRole tempUser in db.Roles)
                 {
-                    if(idR.Id == r.RoleId)
+                    if(roleId == tempUser.Id)
                     {
-                        ViewBag.curRole = idR.Name;
-                        break;
+                        listOfCurrentRoles.Add(tempUser.Name);
                     }
                 }
             }
-            */
+            
+            var listRoles = db.Roles.ToList();
             List<SelectListItem> validRoles = new List<SelectListItem>();
-            /*
-            var data = new[]
-            {
-                new SelectListItem{ Value="10",Text="Winter" },
-                new SelectListItem{ Value="20",Text="Spring/Summer" },
-                new SelectListItem{ Value="30",Text="Fall" }
-            };
-            termList = data.ToList();
-            */
             foreach (IdentityRole idR in listRoles)
             {
                 SelectListItem temp = new SelectListItem
@@ -62,23 +51,53 @@ namespace OptionsWebSite.Controllers
                 };
                 validRoles.Add(temp);
             }
+            ViewBag.listOfCurrentRoles = listOfCurrentRoles;
             ViewBag.validRoles = validRoles;
-            return View(role);
+            return View(user);
         }
 
         // POST: Users/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(string id, FormCollection collection)
         {
             try
             {
                 // TODO: Add update logic here
+                ViewBag.ResultMessage = collection["validRoles"] + " " + collection["UserName"];
+                var user = db.Users.Where(r => r.UserName.Equals(id, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                var role = new IdentityRole();
 
-                return RedirectToAction("Index");
+                foreach(IdentityUserRole tempUserRole in user.Roles)
+                {
+                    if(collection["validRoles"] == tempUserRole.RoleId)
+                    {
+                        ViewBag.ResultMessage = "Role already added to the user";
+                        return View("Index", db.Users.ToList());
+                    }
+                }
+
+                foreach (IdentityRole tempRole in db.Roles)
+                {
+                    if (collection["validRoles"] == tempRole.Id)
+                    {
+                        Response.Write(tempRole.Name + " " + tempRole.Id);
+                        role = tempRole;
+                    }
+                }
+
+                var idRole = new IdentityUserRole()
+                {
+                    UserId = user.Id,
+                    RoleId = role.Id
+                };
+                user.Roles.Add(idRole);
+                db.SaveChanges();
+                return View("Index", db.Users.ToList());
             }
             catch
             {
-                return View();
+                //ViewBag.ResultMessage = "ERROR";
+                return View("Index", db.Users.ToList());
             }
         }
 
