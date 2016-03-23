@@ -105,12 +105,13 @@ namespace OptionsWebSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Choice choice = db.Choices.Find(id);
-            if (choice == null)
+            var choice = db.Choices.Include(c => c.FirstOption).Include(c => c.FourthOption).Include(c => c.SecondOption).Include(c => c.ThirdOption).Include(c => c.YearTerm);
+            Choice finalChoice = choice.Where(c => c.ChoiceId == id).First();
+            if (finalChoice == null)
             {
                 return HttpNotFound();
             }
-            return View(choice);
+            return View(finalChoice);
         }
 
         // GET: Choices/Create
@@ -153,7 +154,7 @@ namespace OptionsWebSite.Controllers
                 choice.YearTermId = getActive();
                 db.Choices.Add(choice);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return Redirect("/Home/Index");
             }
 
             ViewBag.FirstChoiceOptionId = new SelectList(getCurrentCourses(), "OptionId", "Title");
@@ -217,12 +218,13 @@ namespace OptionsWebSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Choice choice = db.Choices.Find(id);
-            if (choice == null)
+            var choice = db.Choices.Include(c => c.FirstOption).Include(c => c.FourthOption).Include(c => c.SecondOption).Include(c => c.ThirdOption).Include(c => c.YearTerm);
+            Choice finalChoice = choice.Where(c => c.ChoiceId == id).First();
+            if (finalChoice == null)
             {
                 return HttpNotFound();
             }
-            return View(choice);
+            return View(finalChoice);
         }
 
         // POST: Choices/Delete/5

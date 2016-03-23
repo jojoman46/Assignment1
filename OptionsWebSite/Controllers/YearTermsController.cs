@@ -38,6 +38,16 @@ namespace OptionsWebSite.Controllers
         // GET: YearTerms/Create
         public ActionResult Create()
         {
+            List<SelectListItem> termList = new List<SelectListItem>();
+            var data = new[]
+            {
+                new SelectListItem{ Value="10",Text="Winter" },
+                new SelectListItem{ Value="20",Text="Spring/Summer" },
+                new SelectListItem{ Value="30",Text="Fall" }
+            };
+            termList = data.ToList();
+            ViewBag.Term = termList;
+
             return View();
         }
 
@@ -54,7 +64,15 @@ namespace OptionsWebSite.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            List<SelectListItem> termList = new List<SelectListItem>();
+            var data = new[]
+            {
+                new SelectListItem{ Value="10",Text="Winter" },
+                new SelectListItem{ Value="20",Text="Spring/Summer" },
+                new SelectListItem{ Value="30",Text="Fall" }
+            };
+            termList = data.ToList();
+            ViewBag.Term = termList;
             return View(yearTerm);
         }
 
@@ -70,6 +88,16 @@ namespace OptionsWebSite.Controllers
             {
                 return HttpNotFound();
             }
+
+            List<SelectListItem> termList = new List<SelectListItem>();
+            var data = new[]
+            {
+                new SelectListItem{ Value="10",Text="Winter" },
+                new SelectListItem{ Value="20",Text="Spring/Summer" },
+                new SelectListItem{ Value="30",Text="Fall" }
+            };
+            termList = data.ToList();
+            ViewBag.Term = termList;
             return View(yearTerm);
         }
 
@@ -92,16 +120,26 @@ namespace OptionsWebSite.Controllers
                     // do your stuff  
                     c.IsDefault = false;
                 }
-                else
-                {
-                    return RedirectToAction("Index");
-                }     
+                //else
+                //{
+                //    return RedirectToAction("Index");
+                //}     
 
 
                 db.Entry(yearTerm).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            List<SelectListItem> termList = new List<SelectListItem>();
+            var data = new[]
+            {
+               new SelectListItem{ Value="10",Text="Winter" },
+                new SelectListItem{ Value="20",Text="Spring/Summer" },
+                new SelectListItem{ Value="30",Text="Fall" }
+            };
+            termList = data.ToList();
+            ViewBag.Term = termList;
             return View(yearTerm);
         }
 

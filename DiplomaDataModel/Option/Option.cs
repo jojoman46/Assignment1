@@ -13,6 +13,8 @@ namespace DiplomaDataModel.Option
         public int OptionId { get; set; }
         [MaxLength(50)]
         public string Title { get; set; }
+        [Display(Name = "Is Active")]
+   
         public bool IsActive { get; set; }
     }
 }
