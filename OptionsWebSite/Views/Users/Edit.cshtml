@@ -1,0 +1,60 @@
+﻿@model OptionsWebSite.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Users - Edit (@Model.UserName)</h2>
+
+@Html.ActionLink("Index", "Index")
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <h5>@ViewBag.ResultMessage</h5>
+
+    <div class="form-horizontal">
+        <h4>User</h4>
+        <hr />
+        <div class="form-group">
+            @Html.Label("Username", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.UserName, new { @readonly = "readonly" })
+            </div>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Email", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email, new { @readonly = "readonly" })
+            </div>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Roles", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.TextBox("curRole")*@
+                @Html.DropDownList("validRoles", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <ul>
+            @foreach (var item in ViewBag.listOfCurrentRoles)
+            {
+                <li>@item</li>
+            }
+        </ul>
+
+        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Edit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
