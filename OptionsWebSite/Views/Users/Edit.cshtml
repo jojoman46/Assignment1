@@ -41,10 +41,23 @@
                 @Html.DropDownList("validRoles", null, htmlAttributes: new { @class = "form-control" })
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.Label("LockoutEnabled", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.TextBox("curRole")*@
+                @Html.CheckBoxFor(m => m.LockoutEnabled)
+            </div>
+        </div>
+
+        <h3>Current Roles</h3>
         <ul>
             @foreach (var item in ViewBag.listOfCurrentRoles)
             {
-                <li>@item</li>
+                <li>
+                    @item
+                    @Html.ActionLink("Delete", "Delete", new { id = item, username = Model.UserName})
+                </li>
             }
         </ul>
 
@@ -53,7 +66,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Edit" class="btn btn-default" />
+                <input type="submit" value="Add Role" class="btn btn-default" />
             </div>
         </div>
     </div>

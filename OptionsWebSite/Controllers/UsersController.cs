@@ -63,7 +63,6 @@ namespace OptionsWebSite.Controllers
             try
             {
                 // TODO: Add update logic here
-                ViewBag.ResultMessage = collection["validRoles"] + " " + collection["UserName"];
                 var user = db.Users.Where(r => r.UserName.Equals(id, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                 var role = new IdentityRole();
 
@@ -80,7 +79,6 @@ namespace OptionsWebSite.Controllers
                 {
                     if (collection["validRoles"] == tempRole.Id)
                     {
-                        Response.Write(tempRole.Name + " " + tempRole.Id);
                         role = tempRole;
                     }
                 }
@@ -91,6 +89,16 @@ namespace OptionsWebSite.Controllers
                     RoleId = role.Id
                 };
                 user.Roles.Add(idRole);
+
+                if (collection["LockoutEnabled"] == "true,false")
+                {
+                    user.LockoutEnabled = true;
+                }
+                else
+                {
+                    user.LockoutEnabled = false;
+                }
+
                 db.SaveChanges();
                 return View("Index", db.Users.ToList());
             }
@@ -102,25 +110,27 @@ namespace OptionsWebSite.Controllers
         }
 
         // GET: Users/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id,string username)
         {
-            return View();
-        }
 
-        // POST: Users/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+            var user = db.Users.Where(r => r.UserName.Equals(username)).FirstOrDefault();
 
-                return RedirectToAction("Index");
-            }
-            catch
+            var role = db.Roles.Where(r => r.Name.Equals(id)).FirstOrDefault();
+            var userRole = new IdentityUserRole();
+
+            foreach(IdentityUserRole tempIdRole in user.Roles)
             {
-                return View();
+                if(tempIdRole.RoleId == role.Id)
+                {
+                    userRole = tempIdRole;
+                    break;
+                }
             }
+
+            user.Roles.Remove(userRole);
+            db.SaveChanges();
+            ViewBag.ResultMessage = "User Deleted";
+            return View("Index", db.Users.ToList());
         }
     }
 }
