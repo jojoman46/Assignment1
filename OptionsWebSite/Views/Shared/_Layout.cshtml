@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - Option Chooser</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
 
 </head>
 <body>
@@ -22,13 +23,15 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @if (ViewContext.HttpContext.User.IsInRole("Student")) {  
-                        <li>@Html.ActionLink("Choices", "Create", "Choices")</li>
+                        <li>@Html.ActionLink("Pick Your Choices", "Create", "Choices")</li>
                     }
                     @if (ViewContext.HttpContext.User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("Choices", "Index", "Choices")</li>
                         <li>@Html.ActionLink("Year Term", "Index", "YearTerms")</li>
                         <li>@Html.ActionLink("Options", "Index", "Options")</li>
+                        <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                        <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

@@ -9,6 +9,9 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+@Html.DropDownList("validYearTerms", null, htmlAttributes: new { @class = "form-control" })
+
 <table class="table">
     <tr>
         <th>
@@ -39,7 +42,7 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr class="@item.YearTermId values">
         <td>
             @(item.YearTerm.Year)
             @switch (item.YearTerm.Term)
@@ -85,3 +88,22 @@
 }
 
 </table>
+
+
+
+<script>
+    $(document).ready(function () {
+        var value = $('#validYearTerms').find(":selected").val();
+        $('.values').each(function (index) {
+            if (!$(this).hasClass(value))
+                $(this).addClass('hide');
+        });
+    });
+
+    $('#validYearTerms').change(function (data) {
+        $('.values').addClass('hide');
+        var c = $('#validYearTerms').find(":selected").val();
+        $('.' + c).removeClass('hide');
+    });
+
+</script>
