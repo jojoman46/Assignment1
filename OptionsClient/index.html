@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <h3 class="navbar-brand">Student Website</h3>
+                </a>
+            </div>
+            <button type="button" class="btn btn-default navbar-btn" id="Login">Login</button>
+            <button type="button" class="btn btn-default navbar-btn" id="Register">Register</button>
+            <button type="button" class="btn btn-default navbar-btn" id="Option">Options</button>
+        </div>
+    </nav>
+
+    <!-- Login -->
+    <div class="col-md-offset-4 col-md-4" id="LoginContent">
+        <h1 class="center-block">Log In</h1>
+        <form>
+            <div class="input-group center-block">
+                <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group center-block">
+                <input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group center-block">
+                <button type="button" class="btn btn-default center-block">Log In</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- REGISTER-->
+    <div class="hide col-md-offset-4 col-md-4" id="RegisterContent">
+        <h1 class="center-block">Register</h1>
+        <form>
+            <div class="input-group center-block">
+                <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group center-block">
+                <input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group center-block">
+                <input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group center-block">
+                <input type="text" class="form-control" placeholder="Confirm Password" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group center-block">
+                <button type="button" class="btn btn-default center-block">Register</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="hide col-md-offset-4 col-md-4" id="OptionContent">
+        <h1 class="center-block">Choice</h1>
+        <form>
+            
+        </form>
+    </div>
+
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        $("#Login").click(function () {
+            //Do stuff when clicked
+            console.log("LOG IN CLICKED");
+            $('#LoginContent').removeClass('hide');
+            $('#RegisterContent').addClass('hide');
+            $('#OptionContent').addClass('hide');
+        });
+
+        $("#Register").click(function () {
+            //Do stuff when clicked
+            console.log("REGISTER CLICKED");
+            $('#RegisterContent').removeClass('hide');
+            $('#LoginContent').addClass('hide');
+            $('#OptionContent').addClass('hide');
+        });
+
+        $("#Option").click(function () {
+            //Do stuff when clicked
+            console.log("CHOICE CLICKED");
+            $('#OptionContent').removeClass('hide');
+            $('#LoginContent').addClass('hide');
+            $('#RegisterContent').addClass('hide');
+        });
+    });
+</script>
+
+<style>
+    #LoginContent {
+        margin-top: 5vh;
+    }
+
+    #RegisterContent{
+        margin-top: 5vh;
+    }
+
+    .input-group{
+        padding-top:30px;
+        padding-bottom:30px;
+    }
+
+    .navbar-brand{
+        padding: 0px 15px;
+    }
+</style>
