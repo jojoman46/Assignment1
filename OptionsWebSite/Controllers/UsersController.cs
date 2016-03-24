@@ -39,7 +39,8 @@ namespace OptionsWebSite.Controllers
                     }
                 }
             }
-            
+         
+
             var listRoles = db.Roles.ToList();
             List<SelectListItem> validRoles = new List<SelectListItem>();
             foreach (IdentityRole idR in listRoles)
