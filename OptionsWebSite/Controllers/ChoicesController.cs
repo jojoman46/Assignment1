@@ -19,7 +19,56 @@ namespace OptionsWebSite.Controllers
         public ActionResult Index()
         {
             var choices = db.Choices.Include(c => c.FirstOption).Include(c => c.FourthOption).Include(c => c.SecondOption).Include(c => c.ThirdOption).Include(c => c.YearTerm);
+
+            ViewBag.validYearTerms = populateDropDown();
+
             return View(choices.ToList());
+        }
+
+        private List<SelectListItem> populateDropDown()
+        {
+            List<SelectListItem> validYearTerms = new List<SelectListItem>();
+            var isDefaultYearTerm = db.YearTerms.Where(y => y.IsDefault.Equals(true)).FirstOrDefault();
+            SelectListItem isDefaultItem = new SelectListItem()
+            {
+                Text = isDefaultYearTerm.Year + " " + getTerm(isDefaultYearTerm.Term),
+                Value = isDefaultYearTerm.YearTermId.ToString()
+            };
+            validYearTerms.Add(isDefaultItem);
+
+            var listYearTerms = db.YearTerms.ToList();
+            foreach (YearTerm yearTerm in listYearTerms)
+            {
+                if (!yearTerm.IsDefault)
+                {
+                    var term = getTerm(yearTerm.Term);
+                    SelectListItem temp = new SelectListItem
+                    {
+                        Text = yearTerm.Year + " " + term,
+                        Value = yearTerm.YearTermId.ToString()
+                    };
+                    validYearTerms.Add(temp);
+                }
+            }
+            return validYearTerms;
+        }
+
+        private string getTerm(int termNumber)
+        {
+            var term = "";
+            if (termNumber == 30)
+            {
+                term = "Fall";
+            }
+            else if (termNumber == 20)
+            {
+                term = "Spring/Summer";
+            }
+            else
+            {
+                term = "Winter";
+            }
+            return term;
         }
 
         public string getCurrentTerm()
