@@ -10,9 +10,75 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-@Html.DropDownList("validYearTerms", null, htmlAttributes: new { @class = "form-control" })
+<script>
+    $.support.cors = true;
+    var d;
+    var firstChoiceArray = new Array(0,0,0,0,0,0,0);
+    console.log(firstChoiceArray);
+    console.log("hello");
+    $.ajax({
+        url: "http://localhost:18254/api/Choices"
+    }).done(function (data) {
+        d = jQuery.parseJSON(data["Johnny"]);
 
-<table class="table">
+        var count = 0;
+        $("#dataChart").addClass("hide");
+
+
+        var value = $('#termDrop').find(":selected").val();
+        $('.values').each(function (index) {
+            if (!$(this).hasClass(value))
+                $(this).addClass('hide');
+        });
+        $('#termDrop').change(function (data) {
+            $('.values').addClass('hide');
+            var c = $('#termDrop').find(":selected").val();
+            $('.' + c).removeClass('hide');
+        });
+
+        var x = $("#termDrop").find(":selected").val();
+
+        $.each(d, function (index, value) {
+            if (value["YearTermId"] == x) {
+
+                firstChoiceArray[value["FirstChoiceOptionId"] - 1]++;
+
+            }
+        })
+
+
+    });
+    
+    
+    $(document).ready(function () {
+        $("#termDrop").on("change", function (data) {
+            var x = $("#termDrop").find(":selected").val();
+            firstChoiceArray = [0, 0, 0, 0, 0, 0, 0];
+            $.each(d, function (index, value) {
+                if (value["YearTermId"] == x) {
+                   
+                        firstChoiceArray[value["FirstChoiceOptionId"]-1]++;
+                    
+                }
+            })
+
+            drawChart();
+
+        })
+
+
+        
+    });
+</script>
+
+@Html.DropDownList("validYearTerms", null, htmlAttributes: new { @class = "form-control" , @id = "termDrop"})
+<br />
+<select id="chartDrop" class="form-control">
+    <option>Tables</option>
+    <option>Charts</option>
+</select>
+
+<table id="dataTable"  class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.YearTerm.YearTermId)
@@ -92,6 +158,102 @@
 
 
 <script>
+
+
+    var drawChart = function(){
+
+            $('#dataChart').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Browser market shares January, 2015 to May, 2015'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Brands',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Microsoft Internet Explorer',
+                        y: firstChoiceArray[0]
+                    }, {
+                        name: 'Chrome',
+                        y: firstChoiceArray[1],
+                        sliced: true,
+                        selected: true
+                    }, {
+                        name: 'Firefox',
+                        y: firstChoiceArray[2]
+                    }, {
+                        name: 'Safari',
+                        y: firstChoiceArray[3]
+                    }, {
+                        name: 'Opera',
+                        y: firstChoiceArray[4]
+                    }, {
+                        name: 'Proprietary or Undetectable',
+                        y: firstChoiceArray[5]
+                    }]
+                }]
+            });
+}
+
+
+
+
+
+
+
+    $("#chartDrop").on("change", function (data) {
+        var x = $("#chartDrop").find(":selected").val();
+        console.log(x);
+
+        if (x == "Tables") {
+            $("#dataTable").removeClass("hide");
+            $("#dataChart").addClass("hide");
+            console.log("PIZZA");
+        } else {
+            $("#dataTable").addClass("hide");
+            $("#dataChart").removeClass("hide");
+            console.log("Burger");
+
+            drawChart();
+
+
+   
+
+
+        }
+        
+
+    })
+
+   
+</script>
+
+
+<div id="dataChart"  style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
+
+@*<script>
     $(document).ready(function () {
         var value = $('#validYearTerms').find(":selected").val();
         $('.values').each(function (index) {
@@ -106,4 +268,4 @@
         $('.' + c).removeClass('hide');
     });
 
-</script>
+</script>*@
