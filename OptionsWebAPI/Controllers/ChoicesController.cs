@@ -16,7 +16,6 @@ using OptionsWebSite.Models;
 
 namespace OptionsWebAPI.Controllers
 {
-    [EnableCors("*", "*", "*")]
     public class ChoicesController : ApiController
     {
         private OptionContext db = new OptionContext();

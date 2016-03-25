@@ -19,10 +19,6 @@ namespace OptionsWebAPI
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
 
-            var cors = new EnableCorsAttribute("*", "*", "GET, POST, OPTIONS");
-            config.EnableCors(cors);
-
-
             // Web API routes
             config.MapHttpAttributeRoutes();
 
