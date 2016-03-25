@@ -26,7 +26,8 @@ namespace OptionsWebAPI.Controllers
         public JToken getStuff()
         {
             JObject stuff = new JObject();
-            stuff.Add("Johnny", JsonConvert.SerializeObject(db.Choices.ToList()));
+            stuff.Add("choiceData", JsonConvert.SerializeObject(db.Choices.ToList()));
+            stuff.Add("optionData", JsonConvert.SerializeObject(db.Options.ToList()));
             return stuff;
         }
     }

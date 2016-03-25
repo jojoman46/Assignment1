@@ -13,16 +13,27 @@
 <script>
     $.support.cors = true;
     var d;
-    var firstChoiceArray = new Array(0,0,0,0,0,0,0);
-    console.log(firstChoiceArray);
+    var firstChoiceArray = new Array(0, 0, 0, 0, 0, 0, 0);
+    var secondChoiceArray = new Array(0, 0, 0, 0, 0, 0, 0);
+    var thirdChoiceArray = new Array(0, 0, 0, 0, 0, 0, 0);
+    var fourthChoiceArray = new Array(0, 0, 0, 0, 0, 0, 0);
+
+
     console.log("hello");
     $.ajax({
         url: "http://localhost:18254/api/Choices"
     }).done(function (data) {
-        d = jQuery.parseJSON(data["Johnny"]);
+        d = jQuery.parseJSON(data["choiceData"]);
+        opdata = jQuery.parseJSON(data["optionData"]);
+        console.log(opdata);
+
+        console.log(opdata[1]["Title"]);
 
         var count = 0;
-        $("#dataChart").addClass("hide");
+        $("#dataChart1").addClass("hide");
+        $("#dataChart2").addClass("hide");
+        $("#dataChart3").addClass("hide");
+        $("#dataChart4").addClass("hide");
 
 
         var value = $('#termDrop').find(":selected").val();
@@ -30,11 +41,7 @@
             if (!$(this).hasClass(value))
                 $(this).addClass('hide');
         });
-        $('#termDrop').change(function (data) {
-            $('.values').addClass('hide');
-            var c = $('#termDrop').find(":selected").val();
-            $('.' + c).removeClass('hide');
-        });
+        
 
         var x = $("#termDrop").find(":selected").val();
 
@@ -42,33 +49,103 @@
             if (value["YearTermId"] == x) {
 
                 firstChoiceArray[value["FirstChoiceOptionId"] - 1]++;
-
+                secondChoiceArray[value["SecondChoiceOptionId"] - 1]++;
+                thirdChoiceArray[value["ThirdChoiceOptionId"] - 1]++;
+                fourthChoiceArray[value["FourthChoiceOptionId"] - 1]++;
             }
         })
+       
+        //var optionsChartArray = [];
+        //var parsedOptionsArray = [];
+        //$.each(opdata, function (index, value) {
+        //    optionsChartArray.push("{ name: \'" + opdata[index]["Title"] + "\', y: thingsArray[" + index + "] }");
+        //    console.log(opdata[index]["Title"]);
+        //})
+        //$.each(optionsChartArray, function (index, value) {
+        //    // console.log(value);
+        //    var z = jQuery.parseJSON(value);
+        //    parsedOptionsArray.push(z);
+        //})
+
+        //console.log(parsedOptionsArray);
 
 
-    });
-    
-    
-    $(document).ready(function () {
+
         $("#termDrop").on("change", function (data) {
             var x = $("#termDrop").find(":selected").val();
             firstChoiceArray = [0, 0, 0, 0, 0, 0, 0];
+            secondChoiceArray = [0, 0, 0, 0, 0, 0, 0];
+            thirdChoiceArray = [0, 0, 0, 0, 0, 0, 0];
+            fourthChoiceArray = [0, 0, 0, 0, 0, 0, 0];
             $.each(d, function (index, value) {
                 if (value["YearTermId"] == x) {
-                   
-                        firstChoiceArray[value["FirstChoiceOptionId"]-1]++;
-                    
+
+                    firstChoiceArray[value["FirstChoiceOptionId"] - 1]++;
+                    secondChoiceArray[value["SecondChoiceOptionId"] - 1]++;
+                    thirdChoiceArray[value["ThirdChoiceOptionId"] - 1]++;
+                    fourthChoiceArray[value["FourthChoiceOptionId"] - 1]++;
+
                 }
             })
+           
+            drawChart(firstChoiceArray, "#dataChart1", "First Choice Option");
+            drawChart(secondChoiceArray, "#dataChart2", "Second Choice Option");
+            drawChart(thirdChoiceArray, "#dataChart3", "Third Choice Option");
+            drawChart(fourthChoiceArray, "#dataChart4", "Fourth Choice Option");
 
-            drawChart();
 
         })
 
-
-        
     });
+    
+
+
+    
+
+    //DOCUMENT READY
+    $(document).ready(function () {
+        
+
+        $('#termDrop').change(function (data) {
+            $('.values').addClass('hide');
+            var c = $('#termDrop').find(":selected").val();
+            $('.' + c).removeClass('hide');
+        });
+
+
+
+
+
+        $("#chartDrop").on("change", function (data) {
+            var x = $("#chartDrop").find(":selected").val();
+            console.log(x);
+
+            if (x == "Tables") {
+                $("#dataTable").removeClass("hide");
+                $("#dataChart1").addClass("hide");
+                $("#dataChart2").addClass("hide");
+                $("#dataChart3").addClass("hide");
+                $("#dataChart4").addClass("hide");
+
+
+            } else {
+                $("#dataTable").addClass("hide");
+                $("#dataChart1").removeClass("hide");
+                $("#dataChart2").removeClass("hide");
+                $("#dataChart3").removeClass("hide");
+                $("#dataChart4").removeClass("hide");
+
+
+                drawChart(firstChoiceArray, "#dataChart1", "First Choice Option");
+                drawChart(secondChoiceArray, "#dataChart2", "Second Choice Option");
+                drawChart(thirdChoiceArray, "#dataChart3", "Third Choice Option");
+                drawChart(fourthChoiceArray, "#dataChart4", "Fourth Choice Option");
+
+                console.log("Load");
+            }
+        })
+    });
+    
 </script>
 
 @Html.DropDownList("validYearTerms", null, htmlAttributes: new { @class = "form-control" , @id = "termDrop"})
@@ -160,9 +237,10 @@
 <script>
 
 
-    var drawChart = function(){
+    var drawChart = function(thingsArray, divForThings, titleForCharts){
+       
 
-            $('#dataChart').highcharts({
+            $(divForThings).highcharts({
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
@@ -170,14 +248,14 @@
                     type: 'pie'
                 },
                 title: {
-                    text: 'Browser market shares January, 2015 to May, 2015'
+                    text: titleForCharts
                 },
                 tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    enabled: false
                 },
                 plotOptions: {
                     pie: {
-                        allowPointSelect: true,
+                        allowPointSelect: false,
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
@@ -189,83 +267,41 @@
                     }
                 },
                 series: [{
-                    name: 'Brands',
+                    name: 'Choices',
                     colorByPoint: true,
                     data: [{
-                        name: 'Microsoft Internet Explorer',
-                        y: firstChoiceArray[0]
+                        name: 'Data Communication',
+                        y:thingsArray[0]
                     }, {
-                        name: 'Chrome',
-                        y: firstChoiceArray[1],
-                        sliced: true,
-                        selected: true
+                        name: 'Client Server',
+                        y: thingsArray[1],
+                        
                     }, {
-                        name: 'Firefox',
-                        y: firstChoiceArray[2]
+                        name: 'Digital Processing',
+                        y: thingsArray[2]
                     }, {
-                        name: 'Safari',
-                        y: firstChoiceArray[3]
+                        name: 'Information Systems',
+                        y: thingsArray[3]
                     }, {
-                        name: 'Opera',
-                        y: firstChoiceArray[4]
+                        name: 'Database',
+                        y: thingsArray[4]
                     }, {
-                        name: 'Proprietary or Undetectable',
-                        y: firstChoiceArray[5]
+                        name: 'Web & Mobile',
+                        y: thingsArray[5]
+                    }, {
+                        name: 'Tech  Pro',
+                        y: thingsArray[6]
                     }]
                 }]
             });
 }
 
-
-
-
-
-
-
-    $("#chartDrop").on("change", function (data) {
-        var x = $("#chartDrop").find(":selected").val();
-        console.log(x);
-
-        if (x == "Tables") {
-            $("#dataTable").removeClass("hide");
-            $("#dataChart").addClass("hide");
-            console.log("PIZZA");
-        } else {
-            $("#dataTable").addClass("hide");
-            $("#dataChart").removeClass("hide");
-            console.log("Burger");
-
-            drawChart();
-
-
-   
-
-
-        }
-        
-
-    })
-
-   
 </script>
 
 
-<div id="dataChart"  style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<div id="dataChart1" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<div id="dataChart2" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<div id="dataChart3" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<div id="dataChart4" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
 
-@*<script>
-    $(document).ready(function () {
-        var value = $('#validYearTerms').find(":selected").val();
-        $('.values').each(function (index) {
-            if (!$(this).hasClass(value))
-                $(this).addClass('hide');
-        });
-    });
-
-    $('#validYearTerms').change(function (data) {
-        $('.values').addClass('hide');
-        var c = $('#validYearTerms').find(":selected").val();
-        $('.' + c).removeClass('hide');
-    });
-
-</script>*@

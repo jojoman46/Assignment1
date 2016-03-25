@@ -233,6 +233,14 @@
     <Compile Include="Migrations\OptionsMigrations\201602192158023_Initial Create.Designer.cs">
       <DependentUpon>201602192158023_Initial Create.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\OptionsMigrations\201603250239047_Adding More Users.cs" />
+    <Compile Include="Migrations\OptionsMigrations\201603250239047_Adding More Users.Designer.cs">
+      <DependentUpon>201603250239047_Adding More Users.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\OptionsMigrations\201603250241520_Adding More Users Part 3.cs" />
+    <Compile Include="Migrations\OptionsMigrations\201603250241520_Adding More Users Part 3.Designer.cs">
+      <DependentUpon>201603250241520_Adding More Users Part 3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\OptionsMigrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -347,6 +355,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\OptionsMigrations\201602192158023_Initial Create.resx">
       <DependentUpon>201602192158023_Initial Create.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\OptionsMigrations\201603250239047_Adding More Users.resx">
+      <DependentUpon>201603250239047_Adding More Users.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\OptionsMigrations\201603250241520_Adding More Users Part 3.resx">
+      <DependentUpon>201603250241520_Adding More Users Part 3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
