@@ -12,6 +12,7 @@ using DiplomaDataModel.Option;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Web.Http.Cors;
+using OptionsWebSite.Models;
 
 namespace OptionsWebAPI.Controllers
 {
@@ -19,6 +20,7 @@ namespace OptionsWebAPI.Controllers
     public class ChoicesController : ApiController
     {
         private OptionContext db = new OptionContext();
+        private ApplicationDbContext appDb = new ApplicationDbContext();
 
 
         public JToken getStuff()
@@ -28,8 +30,6 @@ namespace OptionsWebAPI.Controllers
             stuff.Add("optionData", JsonConvert.SerializeObject(db.Options.ToList()));
             return stuff;
         }
-
-
     }
 }
 

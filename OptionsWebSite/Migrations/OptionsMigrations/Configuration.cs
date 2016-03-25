@@ -66,6 +66,7 @@ namespace OptionsWebSite.Migrations.OptionsMigrations
 
             };
             context.Choices.AddOrUpdate(c => c.ChoiceId, choices.ToArray());
+           
         }
     }
 }
