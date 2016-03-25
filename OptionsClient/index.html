@@ -22,7 +22,7 @@
                 </div>
                 <button type="button" class="btn btn-default navbar-btn" id="Login">Login</button>
                 <button type="button" class="btn btn-default navbar-btn" id="Register">Register</button>
-                <button type="button" class="btn btn-default navbar-btn" id="Option">Options</button>
+                <button type="button" class="btn btn-default navbar-btn" id="Option" ng-click="populateOption()">Options</button>
             </div>
         </nav>
 
@@ -67,7 +67,58 @@
             </form>
         </div>
         <!-- Choice -->
-        <div data-ng-include="'PartialViews/Choice.html'"></div>
+        <!--<div data-ng-include="'PartialViews/Choice.html'"></div> -->
+
+        <div class="hide col-md-offset-4 col-md-4" id="OptionContent">
+            <h1 class="center-block">Choice</h1>
+            <p class="hide" id="idForYearTerm"></p>
+            <form>
+                <div class="input-group center-block">
+                    <input type="text" id="optionYearTerm" readonly="readonly" class="form-control" ng-model="option.yearTermId" placeholder="YearTermID" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group center-block">
+                    <input type="text" id="optionStudentId" class="form-control" ng-model="option.studentId" placeholder="Student ID" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group center-block">
+                    <input type="text" id="optionFirstName" class="form-control" ng-model="option.firstName" placeholder="First Name" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group center-block">
+                    <input type="text" id="optionLastName" class="form-control" ng-model="option.lastName" placeholder="Last Name" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group center-block">
+                    <!--<input type="text" id="optionFirstChoice" class="form-control optionChoice" ng-model="option.firstChoiceOption" placeholder="First Choice Option" aria-describedby="basic-addon1">-->
+                    <h6>First Option</h6>
+                    <select id="firstOption">
+                        <option ng-repeat="item in firstOptionChoices" value="{{item.value}}">{{item.title}}</option>
+                    </select>
+                </div>
+                <div class="input-group center-block">
+                    
+                    <!--<input type="text" id="optionSecondChoice" class="form-control optionChoice" ng-model="option.secondChoiceOption" placeholder="Second Choice Option" aria-describedby="basic-addon1">-->
+                    <h6>Second Option</h6>
+                    <select id="secondOption">
+                        <option ng-repeat="item in secondOptionChoices" value="{{item.value}}">{{item.title}}</option>
+                    </select>
+                </div>
+                <div class="input-group center-block">
+                    <!--<input type="text"  id="optionThirdChoice" class="form-control optionChoice" ng-model="option.thirdChoiceOption" placeholder="Third Choice Option" aria-describedby="basic-addon1">-->
+                    <h6>Third Option</h6>
+                    <select id="thirdOption">
+                        <option ng-repeat="item in thirdOptionChoices" value="{{item.value}}">{{item.title}}</option>
+                    </select>
+                </div>
+                <div class="input-group center-block">
+                    <!--<input type="text"  id="optionFourthChoice" class="form-control optionChoice" ng-model="option.fourthChoiceOption" placeholder="Fourth Choice Option" aria-describedby="basic-addon1">-->
+                    <h6>Fourth Option</h6>
+                    <select id="fourthOption">
+                        <option ng-repeat="item in fourthOptionChoices" value="{{item.value}}">{{item.title}}</option>
+                    </select>
+                </div>
+                <div class="input-group center-block">
+                    <button type="button" class="btn btn-default center-block" ng-click="pickChoice()">Register</button>
+                </div>
+            </form>
+        </div>
     </section>
 </body>
 </html>
@@ -91,6 +142,8 @@
             $('#LoginContent').addClass('hide');
             $('#RegisterContent').addClass('hide');
         });
+
+        
     });
 </script>
 
