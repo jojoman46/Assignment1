@@ -77,7 +77,11 @@
                     <input type="text" id="optionYearTerm" readonly="readonly" class="form-control" ng-model="option.yearTermId" placeholder="YearTermID" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group center-block">
-                    <input type="text" id="optionStudentId" class="form-control" ng-model="option.studentId" placeholder="Student ID" aria-describedby="basic-addon1">
+                    <!-- <input type="text" id="optionStudentId" class="form-control" ng-model="option.studentId" placeholder="Student ID" aria-describedby="basic-addon1"> -->
+                    <h6>Student ID</h6>
+                    <select id="dropDownStudentID">
+                        <option ng-repeat="item in DropDownStudentID" value="{{item.value}}">{{item.title}}</option>
+                    </select>
                 </div>
                 <div class="input-group center-block">
                     <input type="text" id="optionFirstName" class="form-control" ng-model="option.firstName" placeholder="First Name" aria-describedby="basic-addon1">

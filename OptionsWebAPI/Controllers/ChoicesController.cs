@@ -72,8 +72,13 @@ namespace OptionsWebAPI.Controllers
                     validOptionsList.Add(option);
                 }
             }
+
+            var listUsers = appDb.Users.ToList();
+
             stuff.Add("validOptionsList", JsonConvert.SerializeObject(validOptionsList));
             stuff.Add("curYearTerm", JsonConvert.SerializeObject(curYearTerm));
+            stuff.Add("listUsersUserName", JsonConvert.SerializeObject(listUsers));
+
             return stuff;
         }
     }

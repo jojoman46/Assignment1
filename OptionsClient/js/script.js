@@ -63,7 +63,7 @@
 
             var url = "http://localhost:18254/api/Choices";
             var yearTermId = ($("#idForYearTerm").val());
-            var studentId = ($scope.option.studentId);
+            var studentId = $("#dropDownStudentID").val();
             var firstName = ($scope.option.firstName);
             var lastName = ($scope.option.lastName);
             var firstChoice = parseInt($("#firstOption").val());
@@ -135,6 +135,20 @@
             $("#idForYearTerm").val(yearTerm.YearTermId);
         }
 
+        function putUsersUserName(listUsersUserName) {
+            var arrayUsersUserName = new Array();
+            $.each(listUsersUserName, function (index, element) {
+                var user = {
+                    title: element.UserName,
+                    value: element.UserName
+                };
+                arrayUsersUserName.push(user);
+            });
+
+            console.log(arrayUsersUserName);
+            $scope.DropDownStudentID = arrayUsersUserName;
+        }
+
         function putOptionsList(validOptionsList) {
             console.log("putOptions");
             var arrayValidOptions = new Array();
@@ -155,7 +169,9 @@
             url: "http://localhost:18254/api/Choices/registerJsonObject"
         }).done(function (data) {
             validOptionsList = jQuery.parseJSON(data["validOptionsList"]);
+            listUsersUserName = jQuery.parseJSON(data["listUsersUserName"]);
             putOptionsList(validOptionsList);
+            putUsersUserName(listUsersUserName);
         });
 
         /*
