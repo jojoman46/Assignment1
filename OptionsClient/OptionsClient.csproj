@@ -94,10 +94,15 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="js\script.js" />
+    <Content Include="js\studentService.js" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="PartialViews\Login.html" />
+    <Content Include="PartialViews\Choice.html" />
+    <Content Include="PartialViews\Register.html" />
     <Content Include="scripts\version.json" />
     <Content Include="scripts\errors.json" />
     <Content Include="scripts\angular.min.js.map" />
@@ -895,6 +900,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
