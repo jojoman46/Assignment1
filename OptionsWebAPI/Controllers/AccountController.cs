@@ -13,14 +13,17 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using OptionsWebAPI.Models;
 using OptionsWebAPI.Providers;
 using OptionsWebAPI.Results;
+using Newtonsoft.Json.Linq;
+using OptionsWebAPI.Models;
+using System.Web.Http.Cors;
 
 namespace OptionsWebAPI.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]
+    [EnableCors("*", "*", "*")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
@@ -154,6 +157,7 @@ namespace OptionsWebAPI.Controllers
         }
 
         // POST api/Account/AddExternalLogin
+        [EnableCors("*", "*", "*")]
         [Route("AddExternalLogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
         {
@@ -328,7 +332,7 @@ namespace OptionsWebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 

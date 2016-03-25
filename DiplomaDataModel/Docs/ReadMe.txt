@@ -1,5 +1,5 @@
 ﻿enable-migrations -ContextProjectName DiplomaDataModel -ContextTypeName ApplicationDbContext -MigrationsDirectory Migrations\FinalIdentityMigrations
 
-add-migration -ConfigurationTypeName OptionsWebSite.Migrations.FinalIdentityMigrations.Configuration "Initial Create"
+add-migration -ConfigurationTypeName OptionsWebSite.Migrations.OptionsMigrations.Configuration "Adding More Users"
 
-update-database -ConfigurationTypeName OptionsWebSite.Migrations.FinalIdentityMigrations.Configuration
+update-database -ConfigurationTypeName OptionsWebSite.Migrations.OptionsMigrations.Configuration
