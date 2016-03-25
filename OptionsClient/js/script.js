@@ -6,14 +6,6 @@
 
     var MainController = function ($scope, StudentService) {
 
-        var _Student = {
-
-        };
-
-        var _Choice = {
-
-        };
-
         $scope.register = function () {
             console.log("REGISTER");
             var url = "http://localhost:18254/api/Account/Register";
@@ -43,6 +35,7 @@
         }
 
         $scope.logInUser = function () {
+            console.log("LOG IN");
             var username = ($scope.login.username);
             var password = ($scope.login.password);
             var url = "http://localhost:18254/Token";
@@ -61,9 +54,127 @@
                 console.log("LOGGED IN");
                 self.user(data.userName);
                 // Cache the access token in session storage.
-                sessionStorage.setItem(tokenKey, data.access_token);
+                //sessionStorage.setItem(tokenKey, data.access_token);
             }).fail(function (err) { console.warn(err); });
         }
+
+        $scope.pickChoice = function () {
+            console.log("CHOICE");
+
+            var url = "http://localhost:18254/api/Choices";
+            var yearTermId = ($("#idForYearTerm").val());
+            var studentId = ($scope.option.studentId);
+            var firstName = ($scope.option.firstName);
+            var lastName = ($scope.option.lastName);
+            var firstChoice = parseInt($("#firstOption").val());
+            var secondChoice = parseInt($("#secondOption").val());
+            var thirdChoice = parseInt($("#thirdOption").val());
+            var fourthChoice = parseInt($("#fourthOption").val());
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; 
+            var yyyy = today.getFullYear();
+
+            var hour = today.getHours();
+            var min = today.getMinutes();
+            var second = today.getSeconds();
+
+            var timeStamp = "AM";
+
+            if(hour >= 12){
+                timeStamp = "PM";
+            }
+
+            var todayString = yyyy + "-" + mm + "-" + dd + " " + hour + ":" + min + ":" + second + " " + timeStamp; 
+
+            var data = {
+                YearTermId: yearTermId,
+                StudentId: studentId,
+                StudentFirstName: firstName,
+                StudentLastName: lastName,
+                FirstChoiceOptionId: firstChoice,
+                SecondChoiceOptionId: secondChoice,
+                ThirdChoiceOptionId: thirdChoice,
+                FourthChoiceOptionId: fourthChoice,
+                SelectionDate: todayString
+            };
+            
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data
+            }).done(function (data) {
+                console.log("CHOICE COMPLETE");
+                // Cache the access token in session storage.
+                //sessionStorage.setItem(tokenKey, data.access_token);
+            }).fail(function (err) { console.warn(err); });
+
+        }
+
+        $scope.populateOption = function () {
+            $.ajax({
+                url: "http://localhost:18254/api/Choices/registerJsonObject"
+            }).done(function (data) {
+                console.log("Seeding Data In Options");
+                yearTerm = jQuery.parseJSON(data["curYearTerm"]);
+                putYearTermId(yearTerm);
+            });
+        };
+
+        function putYearTermId(yearTerm) {
+            var YearTermString = yearTerm.Year + " ";
+            if (yearTerm.Term == 10) {
+                YearTermString += "Winter";
+            } else if (yearTerm.Term == 20) {
+                YearTermString += "Spring/Summer";
+            } else {
+                YearTermString += "Fall";
+            }
+            $("#optionYearTerm").val(YearTermString);
+            $("#idForYearTerm").val(yearTerm.YearTermId);
+        }
+
+        function putOptionsList(validOptionsList) {
+            console.log("putOptions");
+            var arrayValidOptions = new Array();
+            $.each(validOptionsList, function (index, element) {
+                var option =  {
+                    title: element.Title,
+                    value: element.OptionId
+                };
+                arrayValidOptions.push(option);
+            });
+            $scope.firstOptionChoices = arrayValidOptions;
+            $scope.secondOptionChoices = arrayValidOptions;
+            $scope.thirdOptionChoices = arrayValidOptions;
+            $scope.fourthOptionChoices = arrayValidOptions;
+        }
+
+        $.ajax({
+            url: "http://localhost:18254/api/Choices/registerJsonObject"
+        }).done(function (data) {
+            validOptionsList = jQuery.parseJSON(data["validOptionsList"]);
+            putOptionsList(validOptionsList);
+        });
+
+        /*
+        $scope.regions = [
+                {
+                    name: "Alabama",
+                    code: "AL"
+                },
+                {
+                    name: "Alaska",
+                    code: "AK"
+                },
+                {
+                    name: "American Samoa",
+                    code: "AS"
+                }
+        ];
+        */
+
 
         /*
         var onGetAllComplete = function (data) {
