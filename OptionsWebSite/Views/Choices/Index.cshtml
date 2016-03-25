@@ -13,21 +13,31 @@
 <script>
     $.support.cors = true;
     var d;
-    var firstChoiceArray = new Array(0, 0, 0, 0, 0, 0, 0);
-    var secondChoiceArray = new Array(0, 0, 0, 0, 0, 0, 0);
-    var thirdChoiceArray = new Array(0, 0, 0, 0, 0, 0, 0);
-    var fourthChoiceArray = new Array(0, 0, 0, 0, 0, 0, 0);
+    var count = 0;
+    var firstChoiceArray = [];
+    var secondChoiceArray =[];
+    var thirdChoiceArray = [];
+    var fourthChoiceArray =[];
+    var parsedOptionsArray = [];
 
 
-    console.log("hello");
     $.ajax({
         url: "http://localhost:18254/api/Choices"
     }).done(function (data) {
         d = jQuery.parseJSON(data["choiceData"]);
         opdata = jQuery.parseJSON(data["optionData"]);
-        console.log(opdata);
 
-        console.log(opdata[1]["Title"]);
+
+        $.each(opdata, function (index, value) {
+            firstChoiceArray.push(0);
+            secondChoiceArray.push(0);
+            thirdChoiceArray.push(0);
+            fourthChoiceArray.push(0);
+
+        })
+
+
+        console.log(count);
 
         var count = 0;
         $("#dataChart1").addClass("hide");
@@ -52,31 +62,35 @@
                 secondChoiceArray[value["SecondChoiceOptionId"] - 1]++;
                 thirdChoiceArray[value["ThirdChoiceOptionId"] - 1]++;
                 fourthChoiceArray[value["FourthChoiceOptionId"] - 1]++;
+
+                console.log(firstChoiceArray);
             }
         })
        
-        //var optionsChartArray = [];
-        //var parsedOptionsArray = [];
-        //$.each(opdata, function (index, value) {
-        //    optionsChartArray.push("{ name: \'" + opdata[index]["Title"] + "\', y: thingsArray[" + index + "] }");
-        //    console.log(opdata[index]["Title"]);
-        //})
-        //$.each(optionsChartArray, function (index, value) {
-        //    // console.log(value);
-        //    var z = jQuery.parseJSON(value);
-        //    parsedOptionsArray.push(z);
-        //})
+        var optionsChartArray = [];
+        $.each(opdata, function (index, value) {
+            optionsChartArray.push("{ \"name\": \"" + opdata[index]["Title"] + "\", \"y\": \"thingsArray[" + index + "]\" }");
+            console.log(opdata[index]["Title"]);
+        })
+        $.each(optionsChartArray, function (index, value) {
+             console.log(value);
+            var z = jQuery.parseJSON(value);
+            parsedOptionsArray.push(z);
+        })
 
-        //console.log(parsedOptionsArray);
+        console.log(parsedOptionsArray);
 
 
 
         $("#termDrop").on("change", function (data) {
             var x = $("#termDrop").find(":selected").val();
-            firstChoiceArray = [0, 0, 0, 0, 0, 0, 0];
-            secondChoiceArray = [0, 0, 0, 0, 0, 0, 0];
-            thirdChoiceArray = [0, 0, 0, 0, 0, 0, 0];
-            fourthChoiceArray = [0, 0, 0, 0, 0, 0, 0];
+            $.each(opdata, function (index, value) {
+                firstChoiceArray[index] = 0;
+                secondChoiceArray[index] = 0;
+                thirdChoiceArray[index] = 0;
+                fourthChoiceArray[index] = 0;
+
+            })
             $.each(d, function (index, value) {
                 if (value["YearTermId"] == x) {
 
@@ -88,10 +102,10 @@
                 }
             })
            
-            drawChart(firstChoiceArray, "#dataChart1", "First Choice Option");
-            drawChart(secondChoiceArray, "#dataChart2", "Second Choice Option");
-            drawChart(thirdChoiceArray, "#dataChart3", "Third Choice Option");
-            drawChart(fourthChoiceArray, "#dataChart4", "Fourth Choice Option");
+            drawChart(firstChoiceArray, "#dataChart1", "First Choice Option", parsedOptionsArray);
+            drawChart(secondChoiceArray, "#dataChart2", "Second Choice Option", parsedOptionsArray);
+            drawChart(thirdChoiceArray, "#dataChart3", "Third Choice Option", parsedOptionsArray);
+            drawChart(fourthChoiceArray, "#dataChart4", "Fourth Choice Option", parsedOptionsArray);
 
 
         })
@@ -136,10 +150,10 @@
                 $("#dataChart4").removeClass("hide");
 
 
-                drawChart(firstChoiceArray, "#dataChart1", "First Choice Option");
-                drawChart(secondChoiceArray, "#dataChart2", "Second Choice Option");
-                drawChart(thirdChoiceArray, "#dataChart3", "Third Choice Option");
-                drawChart(fourthChoiceArray, "#dataChart4", "Fourth Choice Option");
+                drawChart(firstChoiceArray, "#dataChart1", "First Choice Option", parsedOptionsArray);
+                drawChart(secondChoiceArray, "#dataChart2", "Second Choice Option", parsedOptionsArray);
+                drawChart(thirdChoiceArray, "#dataChart3", "Third Choice Option", parsedOptionsArray);
+                drawChart(fourthChoiceArray, "#dataChart4", "Fourth Choice Option", parsedOptionsArray);
 
                 console.log("Load");
             }
@@ -237,8 +251,20 @@
 <script>
 
 
-    var drawChart = function(thingsArray, divForThings, titleForCharts){
+    var drawChart = function(thingsArray, divForThings, titleForCharts, sections){
        
+
+        var pies = {
+            slices:[]
+        };        
+
+        $.each(sections, function (index, value) {
+            pies.slices.push({
+                "name": sections[index]["name"],
+                "y": thingsArray[index]
+                });
+        })
+
 
             $(divForThings).highcharts({
                 chart: {
@@ -269,34 +295,18 @@
                 series: [{
                     name: 'Choices',
                     colorByPoint: true,
-                    data: [{
-                        name: 'Data Communication',
-                        y:thingsArray[0]
-                    }, {
-                        name: 'Client Server',
-                        y: thingsArray[1],
-                        
-                    }, {
-                        name: 'Digital Processing',
-                        y: thingsArray[2]
-                    }, {
-                        name: 'Information Systems',
-                        y: thingsArray[3]
-                    }, {
-                        name: 'Database',
-                        y: thingsArray[4]
-                    }, {
-                        name: 'Web & Mobile',
-                        y: thingsArray[5]
-                    }, {
-                        name: 'Tech  Pro',
-                        y: thingsArray[6]
-                    }]
+                    data: pies.slices
                 }]
             });
 }
 
 </script>
+
+
+
+
+
+
 
 
 <div id="dataChart1" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
