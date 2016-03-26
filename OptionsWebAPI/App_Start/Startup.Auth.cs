@@ -11,21 +11,22 @@ using Owin;
 using OptionsWebAPI.Providers;
 using OptionsWebAPI.Models;
 using System.Web.Http.Cors;
+using System.Web.Http;
 
 namespace OptionsWebAPI
 {
-    [EnableCors("*", "*", "*")]
     public partial class Startup
     {
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
 
         public static string PublicClientId { get; private set; }
+        public object Properties { get; private set; }
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
-        [EnableCors("*", "*", "*")]
         public void ConfigureAuth(IAppBuilder app)
         {
-            //app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
 
             // Configure the db context and user manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
@@ -36,7 +37,7 @@ namespace OptionsWebAPI
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-            
+        
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";

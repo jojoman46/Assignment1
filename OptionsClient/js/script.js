@@ -8,37 +8,62 @@
 
         $scope.register = function () {
             console.log("REGISTER");
+
             var url = "http://localhost:18254/api/Account/Register";
-            var username = ($scope.register.username);
-            var email = ($scope.register.email);
-            var password = ($scope.register.password);
-            var confirmPass = ($scope.register.passwordConfirm);
-            if(password == confirmPass){
-                var data = {
-                    UserName: username,
-                    Email: email,
-                    Password: password,
-                    ConfirmPassword : confirmPass
-                };
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    contentType: 'application/json;charset=utf-8',
-                    data: JSON.stringify(data)
-                }).done(function (data) {
-                    console.log(data);
-                }).fail(function (err) { console.warn(err); });
-            } else {
-                $scope.error = "Passwords Dont Match";
-                console.log("PASSWORD NO MATCH");
+            var username = $("#registerUsername").val();
+            var email = $("#registerEmail").val();
+            var password = $("#registerPassword").val();
+            var confirmPass = $("#registerPasswordConfirm").val();
+
+            if (email == "" || username == "" || password == "" || confirmPass == "") {
+                $("#registerMessage").text("Fields are required");
+                $("#registerMessage").css("color", "red");
+                return;
             }
+
+            if (confirmPass != password) {
+                $("#registerMessage").text("Passwords do not match");
+                $("#registerMessage").css("color", "red");
+                return;
+            }
+
+            if ((username.substring(0, 3) != "A00" || username.substring(0, 3) != "a00") && username.length != 9) {
+                $("#registerMessage").text("Username length must b 9 length and start with a00");
+                $("#registerMessage").css("color", "red");
+                return;
+            }
+
+            var data = {
+                UserName: username,
+                Email: email,
+                Password: password,
+                ConfirmPassword : confirmPass
+            };
+            console.log(data);
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data
+            }).done(function (data) {
+                $("#registerMessage").text("Register Complete");
+                $("#optionMessage").css("color", "red");
+            }).fail(function (err) {
+                $("#registerMessage").text(err.responseText);
+                $("#optionMessage").css("color", "red");
+            });
         }
 
         $scope.logInUser = function () {
             console.log("LOG IN");
-            var username = ($scope.login.username);
-            var password = ($scope.login.password);
+            var username = $("#loginUsername").val();
+            var password = $("#loginPassword").val();
             var url = "http://localhost:18254/Token";
+
+            if ( username == "" || password == "") {
+                $("#loginMessage").text("Fields are required");
+                $("#loginMessage").css("color", "red");
+                return;
+            }
 
             var loginData = {
                 grant_type: 'password',
@@ -52,10 +77,18 @@
                 data: loginData
             }).done(function (data) {
                 console.log("LOGGED IN");
-                self.user(data.userName);
-                // Cache the access token in session storage.
-                //sessionStorage.setItem(tokenKey, data.access_token);
-            }).fail(function (err) { console.warn(err); });
+                document.cookie = "token=" + data["access_token"];
+                document.cookie = "username=" + data["userName"];
+                //checkCookie();
+                console.log(data["access_token"]);
+                $("#optionStudentId").val(data["userName"]);
+                $("#loginMessage").text("Login Success");
+                $("#loginMessage").css("color", "green");
+
+            }).fail(function (err) {
+                $("#loginMessage").text("Password and Username combination is wrong");
+                $("#loginMessage").css("color", "red");
+            });
         }
 
         $scope.pickChoice = function () {
@@ -63,9 +96,9 @@
 
             var url = "http://localhost:18254/api/Choices";
             var yearTermId = ($("#idForYearTerm").val());
-            var studentId = ($scope.option.studentId);
-            var firstName = ($scope.option.firstName);
-            var lastName = ($scope.option.lastName);
+            var studentId = $("#optionStudentId").val();
+            var firstName = $("#optionFirstName").val();
+            var lastName = $("#optionLastName").val();
             var firstChoice = parseInt($("#firstOption").val());
             var secondChoice = parseInt($("#secondOption").val());
             var thirdChoice = parseInt($("#thirdOption").val());
@@ -86,7 +119,13 @@
                 timeStamp = "PM";
             }
 
-            var todayString = yyyy + "-" + mm + "-" + dd + " " + hour + ":" + min + ":" + second + " " + timeStamp; 
+            var todayString = yyyy + "-" + mm + "-" + dd + " " + hour + ":" + min + ":" + second + " " + timeStamp;
+
+            if (firstName == "" || lastName == "") {
+                $("#optionMessage").text("Fields are required");
+                $("#optionMessage").css("color", "red");
+                return;
+            }
 
             var data = {
                 YearTermId: yearTermId,
@@ -99,7 +138,15 @@
                 FourthChoiceOptionId: fourthChoice,
                 SelectionDate: todayString
             };
-            
+
+            if(firstChoice == secondChoice || firstChoice == thirdChoice || firstChoice == fourthChoice ||
+                secondChoice == thirdChoice || secondChoice == fourthChoice ||
+                thirdChoice == fourthChoice) {
+                $("#optionMessage").text("One of your option choices are the same as the others option choices");
+                $("#optionMessage").css("color", "red");
+                return;
+            }
+
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -108,8 +155,14 @@
                 console.log("CHOICE COMPLETE");
                 // Cache the access token in session storage.
                 //sessionStorage.setItem(tokenKey, data.access_token);
-            }).fail(function (err) { console.warn(err); });
-
+                $("#optionMessage").text("Has Been Added");
+                $("#optionMessage").css("color", "green");
+            }).fail(function (err) {
+                console.warn(err);
+                $("#optionMessage").text(err.responseText);
+                $("#optionMessage").css("color","red");
+                console.log(err.responseText);
+            });
         }
 
         $scope.populateOption = function () {
@@ -135,6 +188,20 @@
             $("#idForYearTerm").val(yearTerm.YearTermId);
         }
 
+        function putUsersUserName(listUsersUserName) {
+            var arrayUsersUserName = new Array();
+            $.each(listUsersUserName, function (index, element) {
+                var user = {
+                    title: element.UserName,
+                    value: element.UserName
+                };
+                arrayUsersUserName.push(user);
+            });
+
+            console.log(arrayUsersUserName);
+            $scope.DropDownStudentID = arrayUsersUserName;
+        }
+
         function putOptionsList(validOptionsList) {
             console.log("putOptions");
             var arrayValidOptions = new Array();
@@ -155,8 +222,30 @@
             url: "http://localhost:18254/api/Choices/registerJsonObject"
         }).done(function (data) {
             validOptionsList = jQuery.parseJSON(data["validOptionsList"]);
+            //listUsersUserName = jQuery.parseJSON(data["listUsersUserName"]);
             putOptionsList(validOptionsList);
+            //putUsersUserName(listUsersUserName);
         });
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+            }
+            return "";
+        }
+
+        function checkCookie() {
+            var username = getCookie("token");
+            if (username != "") {
+                console.log("FOUND COOKIE");
+            } else {
+                console.log("COOKIE NOT THERE");
+            }
+        }
 
         /*
         $scope.regions = [
