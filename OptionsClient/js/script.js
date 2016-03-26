@@ -45,8 +45,12 @@
                 url: url,
                 data: data
             }).done(function (data) {
-                console.log("WORKS");
-            }).fail(function (err) { console.warn(err); });
+                $("#registerMessage").text("Register Complete");
+                $("#optionMessage").css("color", "red");
+            }).fail(function (err) {
+                $("#registerMessage").text(err.responseText);
+                $("#optionMessage").css("color", "red");
+            });
         }
 
         $scope.logInUser = function () {

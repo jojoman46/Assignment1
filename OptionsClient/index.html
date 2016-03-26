@@ -136,18 +136,21 @@
     $(document).ready(function () {
         $("#Login").click(function () {
             $('#LoginContent').removeClass('hide');
+            $("#loginMessage").text("");
             $('#RegisterContent').addClass('hide');
             $('#OptionContent').addClass('hide');
         });
 
         $("#Register").click(function () {
             $('#RegisterContent').removeClass('hide');
+            $("#registerMessage").text("");
             $('#LoginContent').addClass('hide');
             $('#OptionContent').addClass('hide');
         });
 
         $("#Option").click(function () {
             $('#OptionContent').removeClass('hide');
+            $("#optionMessage").text("");
             $('#LoginContent').addClass('hide');
             $('#RegisterContent').addClass('hide');
         });
