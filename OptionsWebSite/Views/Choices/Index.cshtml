@@ -12,13 +12,15 @@
 
 <script>
     $.support.cors = true;
-    var d;
+    var d, opdata, termdata;
     var count = 0;
     var firstChoiceArray = [];
     var secondChoiceArray =[];
     var thirdChoiceArray = [];
     var fourthChoiceArray =[];
     var parsedOptionsArray = [];
+    var termArray = {};
+    var optionMap = {};
 
 
     $.ajax({
@@ -26,6 +28,34 @@
     }).done(function (data) {
         d = jQuery.parseJSON(data["choiceData"]);
         opdata = jQuery.parseJSON(data["optionData"]);
+        termdata = jQuery.parseJSON(data["termData"]);
+
+        $.each(termdata, function (index, value) {
+            var termName = "";
+            switch(termdata[index]["Term"]) {
+                case 10:
+                    termName = "Winter";
+                    break;
+                case 20:
+                    termName = "Spring/Summer";
+                    break;
+                case 30:
+                    termName = "Fall";
+                    break;
+            }
+            if (termdata[index]["YearTermId"] == index + 1) {
+                termArray[termdata[index]["YearTermId"]] = termdata[index]["Year"] + " " + termName;
+            }
+        })
+
+        $.each(opdata, function (index, value) {
+            
+            optionMap[opdata[index]["OptionId"]] = opdata[index]["Title"];
+            
+        })
+
+
+        console.log(optionMap);
 
 
         $.each(opdata, function (index, value) {
@@ -37,7 +67,6 @@
         })
 
 
-        console.log(count);
 
         var count = 0;
         $("#dataChart1").addClass("hide");
@@ -47,11 +76,10 @@
 
 
         var value = $('#termDrop').find(":selected").val();
-        $('.values').each(function (index) {
-            if (!$(this).hasClass(value))
-                $(this).addClass('hide');
-        });
-        
+       
+        console.log($('#termDrop').find(":selected").val());
+
+        generateTableFunction();
 
         var x = $("#termDrop").find(":selected").val();
 
@@ -63,22 +91,18 @@
                 thirdChoiceArray[value["ThirdChoiceOptionId"] - 1]++;
                 fourthChoiceArray[value["FourthChoiceOptionId"] - 1]++;
 
-                console.log(firstChoiceArray);
             }
         })
        
         var optionsChartArray = [];
         $.each(opdata, function (index, value) {
             optionsChartArray.push("{ \"name\": \"" + opdata[index]["Title"] + "\", \"y\": \"thingsArray[" + index + "]\" }");
-            console.log(opdata[index]["Title"]);
         })
         $.each(optionsChartArray, function (index, value) {
-             console.log(value);
             var z = jQuery.parseJSON(value);
             parsedOptionsArray.push(z);
         })
 
-        console.log(parsedOptionsArray);
 
 
 
@@ -91,6 +115,9 @@
                 fourthChoiceArray[index] = 0;
 
             })
+            deleteTableFunction();
+            generateTableFunction();
+
             $.each(d, function (index, value) {
                 if (value["YearTermId"] == x) {
 
@@ -121,9 +148,11 @@
         
 
         $('#termDrop').change(function (data) {
-            $('.values').addClass('hide');
-            var c = $('#termDrop').find(":selected").val();
-            $('.' + c).removeClass('hide');
+           
+            console.log("Load")
+            deleteTableFunction();
+            generateTableFunction();
+
         });
 
 
@@ -132,10 +161,10 @@
 
         $("#chartDrop").on("change", function (data) {
             var x = $("#chartDrop").find(":selected").val();
-            console.log(x);
-
+            deleteTableFunction();
+            generateTableFunction();
             if (x == "Tables") {
-                $("#dataTable").removeClass("hide");
+                $("#ajaxTable").removeClass("hide");
                 $("#dataChart1").addClass("hide");
                 $("#dataChart2").addClass("hide");
                 $("#dataChart3").addClass("hide");
@@ -143,7 +172,7 @@
 
 
             } else {
-                $("#dataTable").addClass("hide");
+                $("#ajaxTable").addClass("hide");
                 $("#dataChart1").removeClass("hide");
                 $("#dataChart2").removeClass("hide");
                 $("#dataChart3").removeClass("hide");
@@ -155,7 +184,6 @@
                 drawChart(thirdChoiceArray, "#dataChart3", "Third Choice Option", parsedOptionsArray);
                 drawChart(fourthChoiceArray, "#dataChart4", "Fourth Choice Option", parsedOptionsArray);
 
-                console.log("Load");
             }
         })
     });
@@ -169,82 +197,128 @@
     <option>Charts</option>
 </select>
 
-<table id="dataTable"  class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.YearTerm.YearTermId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StudentId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StudentFirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StudentLastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOption.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SecondOption.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ThirdOption.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FourthOption.Title)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr class="@item.YearTermId values">
-        <td>
-            @(item.YearTerm.Year)
-            @switch (item.YearTerm.Term)
-            {
-                case 10:
-                    @(" Winter");
-                    break;
-                case 20:
-                    @(" Spring/Summer");
-                    break;
-                case 30:
-                    @(" Fall");
-                    break;
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StudentId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StudentFirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StudentLastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstOption.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FourthOption.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SecondOption.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ThirdOption.Title)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ChoiceId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ChoiceId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ChoiceId })
-        </td>
-    </tr>
-}
+
+
+
+
+
+
+<table id="ajaxTable" class=" table">
+    
 
 </table>
+
+
+
+<script>
+
+    function generateTableHead() {
+        var table = document.getElementById("ajaxTable");
+        var header = table.createTHead();
+        var row = header.insertRow(0);
+        var cell = row.insertCell(0);
+        for (var step = 0 ; step < 9 ; step++) {
+            cell = row.insertCell(step);
+            switch(step){
+                case 0:
+                    cell.innerHTML = "<b>Year / Semester</b>";
+                    break;
+                case 1:
+                    cell.innerHTML = "<b>Student ID</b>";
+                    break;
+                case 2:
+                    cell.innerHTML = "<b>Student First Name</b>";
+                    break;
+                case 3:
+                    cell.innerHTML = "<b>Student Last Name</b>";
+                    break;
+                case 4:
+                    cell.innerHTML = "<b>Title</b>";
+                    break;
+                case 5:
+                    cell.innerHTML = "<b>Title</b>";
+                    break;
+                case 6:
+                    cell.innerHTML = "<b>Title</b>";
+                    break;
+                case 7:
+                    cell.innerHTML = "<b>Title</b>";
+                    break;
+                case 8:
+                    cell.innerHTML = "";
+                    break;
+            }
+        }
+    }
+
+
+
+    function generateTableFunction() {
+        var table = document.getElementById("ajaxTable");
+        var body = table.createTFoot();
+        var row, cell;
+        var rowCount = 0;
+        generateTableHead();
+
+        $.each(d, function (index, value) {
+            if (d[index]["YearTermId"] == $('#termDrop').find(":selected").val()){
+                row = body.insertRow(rowCount);
+                for (var i = 0; i < 9 ; i++) {
+                    cell = row.insertCell(i);
+                    switch (i) {
+                        case 0:
+                            cell.innerHTML = termArray[$('#termDrop').find(":selected").val()];
+                            break;
+                        case 1:
+                            cell.innerHTML = d[index]["StudentId"];
+                            break;
+                        case 2:
+                            cell.innerHTML = d[index]["StudentFirstName"];
+                            break;
+                        case 3:
+                            cell.innerHTML = d[index]["StudentLastName"];
+
+                            break;
+                        case 4:
+                            cell.innerHTML = optionMap[d[index]["FirstChoiceOptionId"]];
+
+                            break;
+                        case 5:
+                            cell.innerHTML = optionMap[d[index]["SecondChoiceOptionId"]];
+
+                            break;
+                        case 6:
+                            cell.innerHTML = optionMap[d[index]["ThirdChoiceOptionId"]];
+
+                            break;
+                        case 7:
+                            cell.innerHTML = optionMap[d[index]["FourthChoiceOptionId"]];
+
+                            break;
+                        case 8:
+                            cell.innerHTML = "<a href='/Choices/Edit/" + d[index]["ChoiceId"] +
+                                "'>Edit</a> | <a href='/Choices/Details/" + d[index]["ChoiceId"] +
+                                "'>Details</a> |<a href='/Choices/Delete/" + d[index]["ChoiceId"] + "'>Delete</a>"
+
+                            break;
+
+                    }
+
+
+                }
+                rowCount++;
+            }
+        })
+
+    }
+
+    function deleteTableFunction() {
+        document.getElementById("ajaxTable").deleteTFoot();
+        document.getElementById("ajaxTable").deleteTHead();
+
+    }
+</script>
 
 
 
