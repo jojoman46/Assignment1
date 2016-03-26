@@ -27,6 +27,7 @@ namespace OptionsWebAPI.Controllers
             JObject stuff = new JObject();
             stuff.Add("choiceData", JsonConvert.SerializeObject(db.Choices.ToList()));
             stuff.Add("optionData", JsonConvert.SerializeObject(db.Options.ToList()));
+            stuff.Add("termData", JsonConvert.SerializeObject(db.YearTerms.ToList()));
             return stuff;
         }
 
