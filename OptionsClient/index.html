@@ -30,12 +30,13 @@
         <!--<div data-ng-include="'PartialViews/Login.html'"></div>-->
         <div class="col-md-offset-4 col-md-4" id="LoginContent">
             <h1 class="center-block">Log In</h1>
+            <h5 id="loginMessage"></h5>
             <form>
                 <div class="input-group center-block">
-                    <input type="text" class="form-control"ng-model="login.username"  placeholder="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" id="loginUsername" ng-model="login.username"  placeholder="Username" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group center-block">
-                    <input type="text" class="form-control" ng-model="login.password" placeholder="Password" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" id="loginPassword" ng-model="login.password" placeholder="Password" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group center-block">
                     <button type="button" class="btn btn-default center-block" ng-click="logInUser()">Log In</button>
@@ -48,18 +49,19 @@
 
         <div class="hide col-md-offset-4 col-md-4" id="RegisterContent">
             <h1 class="center-block">Register</h1>
+            <h5 id="registerMessage"></h5>
             <form>
                 <div class="input-group center-block">
-                    <input type="text" class="form-control" ng-model="register.username" placeholder="Username" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" id="registerUsername" ng-model="register.username" placeholder="Username" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group center-block">
-                    <input type="text" class="form-control" ng-model="register.email" placeholder="Email" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" id="registerEmail"ng-model="register.email" placeholder="Email" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group center-block">
-                    <input type="text" class="form-control" ng-model="register.password" placeholder="Password" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" id="registerPassword"ng-model="register.password" placeholder="Password" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group center-block">
-                    <input type="text" class="form-control" ng-model="register.passwordConfirm" placeholder="Confirm Password" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" id="registerPasswordConfirm"ng-model="register.passwordConfirm" placeholder="Confirm Password" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group center-block">
                     <button type="button" class="btn btn-default center-block" ng-click="register()">Register</button>
@@ -71,17 +73,20 @@
 
         <div class="hide col-md-offset-4 col-md-4" id="OptionContent">
             <h1 class="center-block">Choice</h1>
+            <h5 id="optionMessage"></h5>
             <p class="hide" id="idForYearTerm"></p>
             <form>
                 <div class="input-group center-block">
                     <input type="text" id="optionYearTerm" readonly="readonly" class="form-control" ng-model="option.yearTermId" placeholder="YearTermID" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group center-block">
-                    <!-- <input type="text" id="optionStudentId" class="form-control" ng-model="option.studentId" placeholder="Student ID" aria-describedby="basic-addon1"> -->
+                    <input type="text" id="optionStudentId" readonly="readonly" class="form-control" ng-model="option.studentId" placeholder="Student ID" aria-describedby="basic-addon1">
+                    <!--
                     <h6>Student ID</h6>
                     <select id="dropDownStudentID">
                         <option ng-repeat="item in DropDownStudentID" value="{{item.value}}">{{item.title}}</option>
                     </select>
+                        -->
                 </div>
                 <div class="input-group center-block">
                     <input type="text" id="optionFirstName" class="form-control" ng-model="option.firstName" placeholder="First Name" aria-describedby="basic-addon1">
@@ -89,14 +94,14 @@
                 <div class="input-group center-block">
                     <input type="text" id="optionLastName" class="form-control" ng-model="option.lastName" placeholder="Last Name" aria-describedby="basic-addon1">
                 </div>
-                <div class="input-group center-block">
+                <div class="input-group center-block" style="padding-bottom: 0px;">
                     <!--<input type="text" id="optionFirstChoice" class="form-control optionChoice" ng-model="option.firstChoiceOption" placeholder="First Choice Option" aria-describedby="basic-addon1">-->
                     <h6>First Option</h6>
                     <select id="firstOption">
                         <option ng-repeat="item in firstOptionChoices" value="{{item.value}}">{{item.title}}</option>
                     </select>
                 </div>
-                <div class="input-group center-block">
+                <div class="input-group center-block" style="padding-bottom: 0px;">
                     
                     <!--<input type="text" id="optionSecondChoice" class="form-control optionChoice" ng-model="option.secondChoiceOption" placeholder="Second Choice Option" aria-describedby="basic-addon1">-->
                     <h6>Second Option</h6>
@@ -104,14 +109,14 @@
                         <option ng-repeat="item in secondOptionChoices" value="{{item.value}}">{{item.title}}</option>
                     </select>
                 </div>
-                <div class="input-group center-block">
+                <div class="input-group center-block" style="padding-bottom: 0px;">
                     <!--<input type="text"  id="optionThirdChoice" class="form-control optionChoice" ng-model="option.thirdChoiceOption" placeholder="Third Choice Option" aria-describedby="basic-addon1">-->
                     <h6>Third Option</h6>
                     <select id="thirdOption">
                         <option ng-repeat="item in thirdOptionChoices" value="{{item.value}}">{{item.title}}</option>
                     </select>
                 </div>
-                <div class="input-group center-block">
+                <div class="input-group center-block" style="padding-bottom: 0px;">
                     <!--<input type="text"  id="optionFourthChoice" class="form-control optionChoice" ng-model="option.fourthChoiceOption" placeholder="Fourth Choice Option" aria-describedby="basic-addon1">-->
                     <h6>Fourth Option</h6>
                     <select id="fourthOption">
@@ -167,5 +172,9 @@
 
     .navbar-brand{
         padding: 0px 15px;
+    }
+
+    select{
+        width:100%;
     }
 </style>

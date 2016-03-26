@@ -40,6 +40,20 @@ namespace OptionsWebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            var choices = db.Choices.ToList();
+            foreach(Choice tempChoice in choices)
+            {
+                if(tempChoice.YearTermId == choice.YearTermId && tempChoice.StudentId == choice.StudentId)
+                {
+                    var resp = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                    {
+                        Content = new StringContent(string.Format("Student Already Made A Choice")),
+                        ReasonPhrase = "Student Already Made A Choice"
+                    };
+                    throw new HttpResponseException(resp);
+                }
+            }
+
             db.Choices.Add(choice);
             db.SaveChanges();
 

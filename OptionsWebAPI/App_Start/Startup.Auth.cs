@@ -26,7 +26,7 @@ namespace OptionsWebAPI
         public void ConfigureAuth(IAppBuilder app)
         {
 
-            //app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
 
             // Configure the db context and user manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
@@ -37,7 +37,7 @@ namespace OptionsWebAPI
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-            
+        
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";

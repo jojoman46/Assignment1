@@ -18,7 +18,7 @@ namespace OptionsWebAPI
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
-
+         
             // Web API routes
             config.MapHttpAttributeRoutes();
 
@@ -28,5 +28,6 @@ namespace OptionsWebAPI
                 defaults: new { id = RouteParameter.Optional }
             );
         }
+
     }
 }
