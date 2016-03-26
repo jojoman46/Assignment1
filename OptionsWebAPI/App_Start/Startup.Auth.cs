@@ -25,6 +25,8 @@ namespace OptionsWebAPI
         [EnableCors("*", "*", "*")]
         public void ConfigureAuth(IAppBuilder app)
         {
+            //app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+
             // Configure the db context and user manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);

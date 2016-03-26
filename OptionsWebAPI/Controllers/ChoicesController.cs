@@ -31,6 +31,52 @@ namespace OptionsWebAPI.Controllers
             stuff.Add("termData", JsonConvert.SerializeObject(db.YearTerms.ToList()));
             return stuff;
         }
+
+        // POST: api/Choices
+        [HttpPost]
+        [ResponseType(typeof(Choice))]
+        public IHttpActionResult PostChoice(Choice choice)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.Choices.Add(choice);
+            db.SaveChanges();
+
+            return CreatedAtRoute("DefaultApi", new { id = choice.YearTermId }, choice);
+        }
+
+        [Route("api/Choices/registerJSONObject")]
+        [HttpGet]
+        public JToken registerJSONObject(){
+            JObject stuff = new JObject();
+            var YearTermList = db.YearTerms.ToList();
+            var curYearTerm = new YearTerm();
+            foreach(YearTerm yearTerm in YearTermList)
+            {
+                if (yearTerm.IsDefault)
+                {
+                    curYearTerm = yearTerm;
+                    break;
+                }
+            }
+
+            var optionList = db.Options.ToList();
+            var validOptionsList = new List<Option>();
+
+            foreach(Option option in optionList)
+            {
+                if (option.IsActive)
+                {
+                    validOptionsList.Add(option);
+                }
+            }
+            stuff.Add("validOptionsList", JsonConvert.SerializeObject(validOptionsList));
+            stuff.Add("curYearTerm", JsonConvert.SerializeObject(curYearTerm));
+            return stuff;
+        }
     }
 }
 
